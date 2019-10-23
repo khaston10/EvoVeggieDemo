@@ -11,6 +11,10 @@ public class GameMain : MonoBehaviour
     public int gamePoints;
     public Light star1;
     public Text GameSpeedDisplayText;
+    public Text gamePointsText;
+    public Text worldSizeText;
+    public Text foodSpawnedText;
+    public Text PlantEatersText;
     public Transform planet1;
     public Transform star1Body;
 
@@ -51,11 +55,16 @@ public class GameMain : MonoBehaviour
         {
             timer += Time.deltaTime;
         }
-        Debug.Log(timer);
 
 
         // Update panels.
         GameSpeedDisplayText.text = gameSpeed.ToString();
+        gamePointsText.text = gamePoints.ToString();
+        worldSizeText.text = worldSize.ToString();
+        foodSpawnedText.text = foodSpawned.ToString();
+        PlantEatersText.text = plantEaters.ToString();
+
+
 
         // Update planet positions.
         star1YPos = worldSize * Mathf.Sin(timerSpeedCoefficient * timer);
@@ -137,7 +146,31 @@ public class GameMain : MonoBehaviour
 
     }
 
+    public void ClickFoodSpawned()
+    {
+        if (gamePoints > 0)
+        {
+            gamePoints -= 1;
+            foodSpawned += 1;
+        }
+    }
 
+    public void ClickWorldSize()
+    {
+        if (gamePoints > 0)
+        {
+            gamePoints -= 1;
+            worldSize += 1;
+        }
+    }
     
+    public void ClickPlantEaters()
+    {
+        if (gamePoints > 0)
+        {
+            gamePoints -= 1;
+            plantEaters += 1;
+        }
+    }
 
 }
