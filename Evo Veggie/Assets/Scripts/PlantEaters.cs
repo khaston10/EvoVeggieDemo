@@ -34,29 +34,16 @@ public class PlantEaters : MonoBehaviour
         }
     }
 
-    public void MovePlantEaters()
+    public void ChangePlantEaterDirection()
     {
         for (int i = 0; i < plantEaterList.Count; i++)
         {
-            // Pick a random direction. 0: x+, 1: x-, 2: z+, 3: z-
-            int dir = Random.Range(0, 4);
-            
-            // Move plant eater in the selected direction.
-            if (dir == 0)
-            {
-                plantEaterList[i].Translate(Vector3.forward * Time.deltaTime);
-            }
-            else if (dir == 1)
-            {
-                plantEaterList[i].Translate(-Vector3.forward * Time.deltaTime);
-            }
+            // Pick random direction, change plantEater direction, and update animation.
+            int randDir = Random.Range(0, 4);
+            plantEaterList[i].GetComponent<PlantEaterController>().direction = randDir;
+
             
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

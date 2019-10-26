@@ -925,7 +925,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6408433173453875369}
-  - component: {fileID: 3919635555265578451}
+  - component: {fileID: 5721310950307418410}
+  - component: {fileID: 8377572020256044174}
+  - component: {fileID: -5944024884497302441}
   m_Layer: 0
   m_Name: plantEaterPrefab
   m_TagString: Untagged
@@ -956,25 +958,49 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &3919635555265578451
-Animator:
-  serializedVersion: 3
+--- !u!114 &5721310950307418410
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7977016080555760314}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 870f36120c6213947a12fb563a592bb3, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ea8c40b546cf040992a73045af3cd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 0
+  enter: 1
+--- !u!65 &8377572020256044174
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7977016080555760314}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.5289282, y: 2.322918, z: 1.4245862}
+  m_Center: {x: -0.038597956, y: -0.0062382966, z: 0.21229312}
+--- !u!54 &-5944024884497302441
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7977016080555760314}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 4
+  m_CollisionDetection: 0
 --- !u!1 &8299485042026401210
 GameObject:
   m_ObjectHideFlags: 0

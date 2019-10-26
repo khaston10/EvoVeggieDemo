@@ -111,4 +111,9 @@ public class Game : MonoBehaviour
             gamePoints += 1;
         }
     }
+
+    public void ClickPlantEaterGloss()
+    {
+        SceneManager.LoadScene("GlossaryPlantEater");
+    }
 }

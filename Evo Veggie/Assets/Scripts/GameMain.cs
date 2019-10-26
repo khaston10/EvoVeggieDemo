@@ -15,13 +15,16 @@ public class GameMain : MonoBehaviour
     public Text worldSizeText;
     public Text foodSpawnedText;
     public Text PlantEatersText;
+    public Text dayCountText;
     public Transform planet1;
     public Transform star1Body;
+    public bool creaturesAwake = true;
 
     private int day = 1;
     private float step = 0;
     private float timer = 0.0f;
-    private int lengthOfDay = 1440;
+    private float plantEaterTimer = 0.0f;
+    private float lengthOfDay = 25.12f;
     private float timerSpeedCoefficient = .25f; // This value depends on the lengthOfDay. If Day is 360 the coefficient should be 1.
     // If lengthOfDay is 2 *360, or 720 the coefficient should be 1/2 or .5, and so on. 
     private int gameSpeed = 1;
@@ -44,7 +47,6 @@ public class GameMain : MonoBehaviour
         gamePoints = GlobalControl.Instance.gamePoints;
 
         GetComponent<PlantEaters>().PlacePlantEaters();
-
     }
 
     // Update is called once per frame
@@ -54,8 +56,8 @@ public class GameMain : MonoBehaviour
         if (gamePaused != true)
         {
             timer += Time.deltaTime;
+            plantEaterTimer += Time.deltaTime;
         }
-
 
         // Update panels.
         GameSpeedDisplayText.text = gameSpeed.ToString();
@@ -63,8 +65,18 @@ public class GameMain : MonoBehaviour
         worldSizeText.text = worldSize.ToString();
         foodSpawnedText.text = foodSpawned.ToString();
         PlantEatersText.text = plantEaters.ToString();
+        dayCountText.text = day.ToString();
 
+        // Check to see if creatures should be awake or asleep.
+        if (timer >= (lengthOfDay / 2) && creaturesAwake == true)
+        {
+            creaturesAwake = false;
+        }
 
+        else if (timer < (lengthOfDay / 2) && creaturesAwake == false)
+        {
+            creaturesAwake = true;
+        }
 
         // Update planet positions.
         star1YPos = worldSize * Mathf.Sin(timerSpeedCoefficient * timer);
@@ -80,13 +92,21 @@ public class GameMain : MonoBehaviour
         star1.intensity = worldSize / 5;
         yPos = worldSize * Mathf.Sin(timerSpeedCoefficient * timer);
         xPos = worldSize * Mathf.Cos(timerSpeedCoefficient * timer) + worldSize / 2;
-
         star1.transform.position = new Vector3(xPos, yPos, worldSize / 2);
+
+        // Update planteater direction.
+        if (plantEaterTimer > 1)
+        {
+            GameObject.Find("Game").GetComponent<PlantEaters>().ChangePlantEaterDirection();
+            plantEaterTimer = 0;
+            
+        }
 
         if (timer >= lengthOfDay)
         {
             timer = 0;
             day += 1;
+            Debug.Log("Day: " + day);
         }
     }
 
@@ -112,9 +132,9 @@ public class GameMain : MonoBehaviour
     public void ClickForward()
     {
         // Only makes changes if the lengthOfDay = 360, meaning forward mode was occuring. 
-        if (lengthOfDay == 360)
+        if (timerSpeedCoefficient == 1)
         {
-            lengthOfDay = 1440;
+            lengthOfDay = 25.12f;
             timerSpeedCoefficient = .25f;
             timer *= 4;
             gameSpeed = 1;
@@ -130,9 +150,9 @@ public class GameMain : MonoBehaviour
     public void ClickFastForward()
     {
         // Only make changes if the lengthOFDay = 1440, meaning fast forward was occuring. 
-        if (lengthOfDay == 1440)
+        if (timerSpeedCoefficient == .25)
         {
-            lengthOfDay = 360;
+            lengthOfDay = 6.28f;
             timerSpeedCoefficient = 1f;
             timer /= 4;
             gameSpeed = 4;
@@ -161,6 +181,9 @@ public class GameMain : MonoBehaviour
         {
             gamePoints -= 1;
             worldSize += 1;
+            GameObject.Find("Grid").GetComponent<CreateGrid>().UpdateGrid();
+            GameObject.Find("Grid").GetComponent<CreateGrid>().UpdateCameraPos();
+
         }
     }
     

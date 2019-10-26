@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level01.unity
     guid: f1a3e075f6273ef42a31d098fc1c528d
+  - enabled: 1
+    path: Assets/Scenes/GlossaryPlantEater.unity
+    guid: c39b7fdf9ada7d243947d8f8842b6d3f
   m_configObjects: {}

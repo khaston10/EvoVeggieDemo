@@ -39,11 +39,42 @@ public class CreateGrid : MonoBehaviour
         
     }
 
+    // Update Grid when user presses the world size button.
+    public void UpdateGrid()
+    {
+       Debug.Log("Add Grids");
+        // Populate the news positions when player pushed the world size button.
+        for (int i = 0; i < GameObject.Find("Game").GetComponent<GameMain>().worldSize; i++)
+        {
+            for (int j = GameObject.Find("Game").GetComponent<GameMain>().worldSize - 1; j < GameObject.Find("Game").GetComponent<GameMain>().worldSize; j++)
+            {
+                Vector3 pos = new Vector3(i, 1.0f, j);
+                positions.Add(pos);
+            }
+        }
+        for (int i = GameObject.Find("Game").GetComponent<GameMain>().worldSize - 1; i < GameObject.Find("Game").GetComponent<GameMain>().worldSize; i++)
+        {
+            for (int j = 0; j < GameObject.Find("Game").GetComponent<GameMain>().worldSize; j++)
+            {
+                Vector3 pos = new Vector3(i, 1.0f, j);
+                positions.Add(pos);
+            }
+        }
+
+        // Place grid prefabs at positions from grid.
+        for (int i = 2 * (GameObject.Find("Game").GetComponent<GameMain>().worldSize - 1); i < positions.Count; i++)
+        {
+            Transform t = Instantiate(gridPreFab);
+            t.localPosition = positions[i];
+        }
+
+    }
+
     // Update camera position
-    void UpdateCameraPos()
+    public void UpdateCameraPos()
     {
         Vector3 camPos = new Vector3(GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2, GameObject.Find("Game").GetComponent<GameMain>().worldSize, -GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2);
         cam.transform.localPosition = camPos;
-        cam.transform.Rotate(45f, 0f, 0f);
+        //cam.transform.Rotate(45f, 0f, 0f);
     }
 }
