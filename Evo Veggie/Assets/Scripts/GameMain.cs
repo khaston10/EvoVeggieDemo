@@ -19,6 +19,8 @@ public class GameMain : MonoBehaviour
     public Transform planet1;
     public Transform star1Body;
     public bool creaturesAwake = true;
+    public Transform food;
+    public List<Vector3> positions;
 
     private int day = 1;
     private float step = 0;
@@ -47,6 +49,27 @@ public class GameMain : MonoBehaviour
         gamePoints = GlobalControl.Instance.gamePoints;
 
         GetComponent<PlantEaters>().PlacePlantEaters();
+
+        // Place food at begining of game.
+        // Populate the positions list with all possible positions for grids
+        for (int i = 0; i < worldSize; i++)
+        {
+            for (int j = 0; j < worldSize; j++)
+            {
+                Vector3 pos = new Vector3(i, 1.5f, j);
+                positions.Add(pos);
+            }
+        }
+
+        for (int j = 0; j < foodSpawned; j++)
+        {
+            // Grab a random location to spawn food.
+            int randPos = Random.Range(0, positions.Count);
+
+            Transform t = Instantiate(food);
+            t.localPosition = positions[randPos];
+            positions.RemoveAt(randPos);
+        }
     }
 
     // Update is called once per frame
@@ -57,6 +80,7 @@ public class GameMain : MonoBehaviour
         {
             timer += Time.deltaTime;
             plantEaterTimer += Time.deltaTime;
+            
         }
 
         // Update panels.
@@ -107,6 +131,7 @@ public class GameMain : MonoBehaviour
             timer = 0;
             day += 1;
             Debug.Log("Day: " + day);
+
         }
     }
 

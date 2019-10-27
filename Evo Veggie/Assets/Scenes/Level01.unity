@@ -629,6 +629,8 @@ MonoBehaviour:
   planet1: {fileID: 769411024}
   star1Body: {fileID: 1591006024}
   creaturesAwake: 0
+  food: {fileID: 4234583734472224857, guid: e319e182fb8549b4ea15b403ae82aae0, type: 3}
+  positions: []
 --- !u!4 &236181580
 Transform:
   m_ObjectHideFlags: 0

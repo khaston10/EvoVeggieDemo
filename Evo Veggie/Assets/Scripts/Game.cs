@@ -116,4 +116,8 @@ public class Game : MonoBehaviour
     {
         SceneManager.LoadScene("GlossaryPlantEater");
     }
+    public void ClickMeatEaterGloss()
+    {
+        SceneManager.LoadScene("GlossaryMeatEater");
+    }
 }
