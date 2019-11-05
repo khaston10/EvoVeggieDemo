@@ -50,6 +50,7 @@ public class CreateGrid : MonoBehaviour
             {
                 Vector3 pos = new Vector3(i, 1.0f, j);
                 positions.Add(pos);
+                GameObject.Find("Game").GetComponent<GameMain>().foodPositions.Add(pos);
             }
         }
         for (int i = GameObject.Find("Game").GetComponent<GameMain>().worldSize - 1; i < GameObject.Find("Game").GetComponent<GameMain>().worldSize; i++)
@@ -58,6 +59,7 @@ public class CreateGrid : MonoBehaviour
             {
                 Vector3 pos = new Vector3(i, 1.0f, j);
                 positions.Add(pos);
+                GameObject.Find("Game").GetComponent<GameMain>().foodPositions.Add(pos);
             }
         }
 

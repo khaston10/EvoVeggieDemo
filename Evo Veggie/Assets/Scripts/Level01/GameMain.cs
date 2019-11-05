@@ -20,7 +20,13 @@ public class GameMain : MonoBehaviour
     public Transform star1Body;
     public bool creaturesAwake = true;
     public Transform food;
-    public List<Vector3> positions;
+    public List<Vector3> foodPositions;
+    public List<Transform> foodList;
+
+    //------------------------------------This code is used for debugging, remove before release.--------------------
+    public bool foodOn = true;
+    public bool movePlanetOn = true;
+    public bool moveStarOn = true;
 
     private int day = 1;
     private float step = 0;
@@ -48,28 +54,17 @@ public class GameMain : MonoBehaviour
         plantEaters = GlobalControl.Instance.plantEaters;
         gamePoints = GlobalControl.Instance.gamePoints;
 
-        GetComponent<PlantEaters>().PlacePlantEaters();
 
-        // Place food at begining of game.
         // Populate the positions list with all possible positions for grids
         for (int i = 0; i < worldSize; i++)
         {
             for (int j = 0; j < worldSize; j++)
             {
-                Vector3 pos = new Vector3(i, 1.5f, j);
-                positions.Add(pos);
+                Vector3 pos = new Vector3(i, 1f, j);
+                foodPositions.Add(pos);
             }
         }
 
-        for (int j = 0; j < foodSpawned; j++)
-        {
-            // Grab a random location to spawn food.
-            int randPos = Random.Range(0, positions.Count);
-
-            Transform t = Instantiate(food);
-            t.localPosition = positions[randPos];
-            positions.RemoveAt(randPos);
-        }
     }
 
     // Update is called once per frame
@@ -81,6 +76,30 @@ public class GameMain : MonoBehaviour
             timer += Time.deltaTime;
             plantEaterTimer += Time.deltaTime;
             
+        }
+
+        // Restock food at the beginning of each day.
+        if (foodList.Count < foodSpawned && foodOn && creaturesAwake)
+        {
+            // Pick a random position.
+            int randPos = Random.Range(0, foodPositions.Count);
+
+            // Place food at position and remove its position from the available list, then place the transform in the foodList. 
+            Transform f = Instantiate(food);
+            f.localPosition = foodPositions[randPos];
+            foodPositions.RemoveAt(randPos);
+            foodList.Add(f);
+        }
+
+        //------------------------------------This code is used for debugging, remove before release.--------------------
+        if (foodOn == false)
+        {
+            for (int i = 0; i < foodList.Count; i++)
+            {
+                foodPositions.Add(foodList[i].localPosition);
+                Destroy(foodList[i].gameObject);
+            }
+            foodList.Clear();
         }
 
         // Update panels.
@@ -103,14 +122,23 @@ public class GameMain : MonoBehaviour
         }
 
         // Update planet positions.
-        star1YPos = worldSize * Mathf.Sin(timerSpeedCoefficient * timer);
-        star1XPos = worldSize * Mathf.Cos(timerSpeedCoefficient * timer) + worldSize / 2;
-        star1Body.position = new Vector3(xPos, yPos, worldSize / 2);
+        //------------------------------------This code is used for debugging, remove before release.--------------------
+        if (moveStarOn)
+        {
+            star1YPos = worldSize * Mathf.Sin(timerSpeedCoefficient * timer);
+            star1XPos = worldSize * Mathf.Cos(timerSpeedCoefficient * timer) + worldSize / 2;
+            star1Body.position = new Vector3(xPos, yPos, worldSize / 2);
+        }
 
-        planetZPos = worldSize * -3 * Mathf.Cos(timerSpeedCoefficient * timer);
-        planetYPos = worldSize * Mathf.Cos(timerSpeedCoefficient * timer);
-        planetXPos = worldSize * Mathf.Sin(timerSpeedCoefficient * timer) + worldSize / 2;
-        planet1.position = new Vector3(planetXPos, planetYPos, planetZPos);
+        //------------------------------------This code is used for debugging, remove before release.--------------------
+        if (movePlanetOn)
+        {
+            planetZPos = worldSize * -3 * Mathf.Cos(timerSpeedCoefficient * timer);
+            planetYPos = worldSize * Mathf.Cos(timerSpeedCoefficient * timer);
+            planetXPos = worldSize * Mathf.Sin(timerSpeedCoefficient * timer) + worldSize / 2;
+            planet1.position = new Vector3(planetXPos, planetYPos, planetZPos);
+        }
+        
 
         // Move the source of light, star1.
         star1.intensity = worldSize / 5;
@@ -118,13 +146,6 @@ public class GameMain : MonoBehaviour
         xPos = worldSize * Mathf.Cos(timerSpeedCoefficient * timer) + worldSize / 2;
         star1.transform.position = new Vector3(xPos, yPos, worldSize / 2);
 
-        // Update planteater direction.
-        if (plantEaterTimer > 1)
-        {
-            GameObject.Find("Game").GetComponent<PlantEaters>().ChangePlantEaterDirection();
-            plantEaterTimer = 0;
-            
-        }
 
         if (timer >= lengthOfDay)
         {

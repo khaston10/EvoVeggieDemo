@@ -595,7 +595,6 @@ GameObject:
   m_Component:
   - component: {fileID: 236181580}
   - component: {fileID: 236181579}
-  - component: {fileID: 236181581}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -630,7 +629,8 @@ MonoBehaviour:
   star1Body: {fileID: 1591006024}
   creaturesAwake: 0
   food: {fileID: 4234583734472224857, guid: e319e182fb8549b4ea15b403ae82aae0, type: 3}
-  positions: []
+  foodPositions: []
+  foodList: []
 --- !u!4 &236181580
 Transform:
   m_ObjectHideFlags: 0
@@ -645,22 +645,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &236181581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 236181578}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fed01a5de9d5d084eaf17f9b2ab84ebb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  plantEaterPrefab: {fileID: 6408433173453875369, guid: e00df5adc22087540b71b48e72da16f4,
-    type: 3}
-  positions: []
-  plantEaterList: []
 --- !u!1 &251922629
 GameObject:
   m_ObjectHideFlags: 0
