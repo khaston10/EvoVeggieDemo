@@ -214,7 +214,7 @@ public class GameMain : MonoBehaviour
 
     public void ClickFoodSpawned()
     {
-        if (gamePoints > 0)
+        if (gamePoints > 0 && foodPositions.Count > 0 && creaturesAwake)
         {
             gamePoints -= 1;
             foodSpawned += 1;
