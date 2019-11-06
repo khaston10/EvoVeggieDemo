@@ -9,6 +9,8 @@ public class GameMain : MonoBehaviour
     public int foodSpawned;
     public int plantEaters;
     public int gamePoints;
+    public bool creaturesAwake = true;
+    public bool gamePaused = false;
     public Light star1;
     public Text GameSpeedDisplayText;
     public Text gamePointsText;
@@ -18,18 +20,20 @@ public class GameMain : MonoBehaviour
     public Text dayCountText;
     public Transform planet1;
     public Transform star1Body;
-    public bool creaturesAwake = true;
     public Transform food;
+    public Transform plantEater;
     public List<Vector3> foodPositions;
+    public List<Vector3> plantEaterStartPositions;
     public List<Transform> foodList;
+    public List<Transform> plantEaterList;
 
     //------------------------------------This code is used for debugging, remove before release.--------------------
     public bool foodOn = true;
     public bool movePlanetOn = true;
     public bool moveStarOn = true;
+    public bool plantEatersOn = true;
 
     private int day = 1;
-    private float step = 0;
     private float timer = 0.0f;
     private float plantEaterTimer = 0.0f;
     private float lengthOfDay = 25.12f;
@@ -43,7 +47,6 @@ public class GameMain : MonoBehaviour
     private float planetYPos;
     private float planetZPos;
     private float planetXPos;
-    private bool gamePaused = false;
 
 
     // Start is called before the first frame update
@@ -55,13 +58,15 @@ public class GameMain : MonoBehaviour
         gamePoints = GlobalControl.Instance.gamePoints;
 
 
-        // Populate the positions list with all possible positions for grids
+        // Populate the positions list with all possible positions for grids.
         for (int i = 0; i < worldSize; i++)
         {
             for (int j = 0; j < worldSize; j++)
             {
-                Vector3 pos = new Vector3(i, 1f, j);
-                foodPositions.Add(pos);
+                Vector3 foodPos = new Vector3(i, 1f, j);
+                Vector3 plantEaterPos = new Vector3(i, 1.4f, j);
+                foodPositions.Add(foodPos);
+                plantEaterStartPositions.Add(plantEaterPos);
             }
         }
 
@@ -101,6 +106,31 @@ public class GameMain : MonoBehaviour
             }
             foodList.Clear();
         }
+
+        // Restock plant eaters at the beginning of each day.
+        if (plantEaterList.Count < plantEaters && plantEatersOn && creaturesAwake)
+        {
+            // Pick a random position.
+            int randPos = Random.Range(0, plantEaterStartPositions.Count);
+
+            // Place plant eater at position, then place the transform in the plantEaterList. 
+            Transform p = Instantiate(plantEater);
+            p.localPosition = plantEaterStartPositions[randPos];
+            plantEaterList.Add(p);
+
+        }
+
+        //------------------------------------This code is used for debugging, remove before release.--------------------
+        if (plantEatersOn == false)
+        {
+            for (int i = 0; i < plantEaterList.Count; i++)
+            {
+                plantEaterStartPositions.Add(plantEaterList[i].localPosition);
+                Destroy(plantEaterList[i].gameObject);
+            }
+            plantEaterList.Clear();
+        }
+
 
         // Update panels.
         GameSpeedDisplayText.text = gameSpeed.ToString();
@@ -235,7 +265,7 @@ public class GameMain : MonoBehaviour
     
     public void ClickPlantEaters()
     {
-        if (gamePoints > 0)
+        if (gamePoints > 0 && creaturesAwake)
         {
             gamePoints -= 1;
             plantEaters += 1;

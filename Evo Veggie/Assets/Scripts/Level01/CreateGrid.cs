@@ -48,18 +48,22 @@ public class CreateGrid : MonoBehaviour
         {
             for (int j = GameObject.Find("Game").GetComponent<GameMain>().worldSize - 1; j < GameObject.Find("Game").GetComponent<GameMain>().worldSize; j++)
             {
-                Vector3 pos = new Vector3(i, 1.0f, j);
-                positions.Add(pos);
-                GameObject.Find("Game").GetComponent<GameMain>().foodPositions.Add(pos);
+                Vector3 foodPos = new Vector3(i, 1.0f, j);
+                Vector3 plantEaterPos = new Vector3(i, 1.4f, j);
+                positions.Add(foodPos);
+                GameObject.Find("Game").GetComponent<GameMain>().foodPositions.Add(foodPos);
+                GameObject.Find("Game").GetComponent<GameMain>().plantEaterStartPositions.Add(plantEaterPos);
             }
         }
         for (int i = GameObject.Find("Game").GetComponent<GameMain>().worldSize - 1; i < GameObject.Find("Game").GetComponent<GameMain>().worldSize; i++)
         {
             for (int j = 0; j < GameObject.Find("Game").GetComponent<GameMain>().worldSize; j++)
             {
-                Vector3 pos = new Vector3(i, 1.0f, j);
-                positions.Add(pos);
-                GameObject.Find("Game").GetComponent<GameMain>().foodPositions.Add(pos);
+                Vector3 foodPos = new Vector3(i, 1.0f, j);
+                Vector3 plantEaterPos = new Vector3(i, 1.4f, j);
+                positions.Add(foodPos);
+                GameObject.Find("Game").GetComponent<GameMain>().foodPositions.Add(foodPos);
+                GameObject.Find("Game").GetComponent<GameMain>().plantEaterStartPositions.Add(plantEaterPos);
             }
         }
 

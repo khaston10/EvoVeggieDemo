@@ -618,6 +618,8 @@ MonoBehaviour:
   foodSpawned: 0
   plantEaters: 0
   gamePoints: 0
+  creaturesAwake: 0
+  gamePaused: 0
   star1: {fileID: 597619905}
   GameSpeedDisplayText: {fileID: 1094408791}
   gamePointsText: {fileID: 589635890}
@@ -627,10 +629,17 @@ MonoBehaviour:
   dayCountText: {fileID: 276970059}
   planet1: {fileID: 769411024}
   star1Body: {fileID: 1591006024}
-  creaturesAwake: 0
   food: {fileID: 4234583734472224857, guid: e319e182fb8549b4ea15b403ae82aae0, type: 3}
+  plantEater: {fileID: 4116694515672772760, guid: cdc9e8f8f3b69db488316c37a8788387,
+    type: 3}
   foodPositions: []
+  plantEaterStartPositions: []
   foodList: []
+  plantEaterList: []
+  foodOn: 1
+  movePlanetOn: 1
+  moveStarOn: 1
+  plantEatersOn: 1
 --- !u!4 &236181580
 Transform:
   m_ObjectHideFlags: 0
@@ -4031,3 +4040,72 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2127521593}
   m_CullTransparentMesh: 0
+--- !u!1001 &3371308224535554579
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 377495418365494450, guid: cdc9e8f8f3b69db488316c37a8788387,
+        type: 3}
+      propertyPath: m_Name
+      value: PlantEater
+      objectReference: {fileID: 0}
+    - target: {fileID: 4116694515672772760, guid: cdc9e8f8f3b69db488316c37a8788387,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.900306
+      objectReference: {fileID: 0}
+    - target: {fileID: 4116694515672772760, guid: cdc9e8f8f3b69db488316c37a8788387,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.7889917
+      objectReference: {fileID: 0}
+    - target: {fileID: 4116694515672772760, guid: cdc9e8f8f3b69db488316c37a8788387,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.858444
+      objectReference: {fileID: 0}
+    - target: {fileID: 4116694515672772760, guid: cdc9e8f8f3b69db488316c37a8788387,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4116694515672772760, guid: cdc9e8f8f3b69db488316c37a8788387,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4116694515672772760, guid: cdc9e8f8f3b69db488316c37a8788387,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4116694515672772760, guid: cdc9e8f8f3b69db488316c37a8788387,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4116694515672772760, guid: cdc9e8f8f3b69db488316c37a8788387,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4116694515672772760, guid: cdc9e8f8f3b69db488316c37a8788387,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4116694515672772760, guid: cdc9e8f8f3b69db488316c37a8788387,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4116694515672772760, guid: cdc9e8f8f3b69db488316c37a8788387,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cdc9e8f8f3b69db488316c37a8788387, type: 3}
