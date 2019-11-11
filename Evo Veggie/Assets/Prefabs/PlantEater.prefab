@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4116694515672772760}
-  - component: {fileID: 7513971930884169154}
   m_Layer: 0
   m_Name: PlantEater
   m_TagString: Untagged
@@ -32,20 +31,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7513971930884169154
+--- !u!114 &3370517876949303614
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 377495418365494450}
+  m_GameObject: {fileID: 3155904294969078889}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1c8b5bb132fa6b429dac47801237fcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
-  timeBetweenDirectionChange: 2
+  timeBetweenDirectionChange: 1
 --- !u!1001 &5005764043459800787
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -113,9 +111,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5944024884497302441, guid: e00df5adc22087540b71b48e72da16f4,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -6732730209779369247, guid: e00df5adc22087540b71b48e72da16f4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e00df5adc22087540b71b48e72da16f4, type: 3}
+--- !u!1 &3155904294969078889 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7977016080555760314, guid: e00df5adc22087540b71b48e72da16f4,
+    type: 3}
+  m_PrefabInstance: {fileID: 5005764043459800787}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2132278384147039866 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6408433173453875369, guid: e00df5adc22087540b71b48e72da16f4,

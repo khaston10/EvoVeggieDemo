@@ -5,6 +5,7 @@ using UnityEngine;
 public class CreateGrid : MonoBehaviour
 {
     public Transform gridPreFab;
+    public Transform wall;
     public Camera cam;
     public List<Vector3> positions = new List<Vector3>();
 
@@ -31,6 +32,16 @@ public class CreateGrid : MonoBehaviour
 
         // Move camera into correct location based on the world size.
         UpdateCameraPos();
+
+        // Create retaining walls in world to keep plant eaters and meat eaters from getting stuck.
+        Transform wall1 = Instantiate(wall);
+        Transform wall2 = Instantiate(wall);
+
+        wall1.localScale = new Vector3(GameObject.Find("Game").GetComponent<GameMain>().worldSize, 1f, .1f);
+        wall1.localPosition = new Vector3((GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2)- .5f, 1f, 0f);
+        wall2.localScale = new Vector3(GameObject.Find("Game").GetComponent<GameMain>().worldSize, 1f, .1f);
+        wall2.localPosition = new Vector3((GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2) - .5f, 1f,
+            GameObject.Find("Game").GetComponent<GameMain>().worldSize - .5f);
     }
 
     // Update is called once per frame
@@ -73,6 +84,9 @@ public class CreateGrid : MonoBehaviour
             Transform t = Instantiate(gridPreFab);
             t.localPosition = positions[i];
         }
+
+        // Place retaining walls in world to keep plant eaters and meat eaters from getting stuck.
+
 
     }
 

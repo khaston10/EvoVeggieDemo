@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class PlantEaterContoller : MonoBehaviour
 {
-    public float speed = .5f;
     public int timeBetweenDirectionChange = 1;
 
     private int direction = 0; // 0: Move y+, 1: Move y-, 2: Move x+, 3: Move x-
     private float timer = 0.0f;
-    public Transform plantEaterBody;
+    //public Transform plantEaterBody;
 
     // Start is called before the first frame update
     void Start()
     {
-        plantEaterBody = transform.GetComponentInParent<Transform>();
+        //plantEaterBody = transform.GetComponentInChildren<Transform>();
     }
 
     // Update is called once per frame
@@ -49,15 +48,21 @@ public class PlantEaterContoller : MonoBehaviour
     {
         direction = Random.Range(0, 4);
 
-        if (direction == 0) plantEaterBody.Rotate(Vector3.up);
-        else if (direction == 1) plantEaterBody.Rotate(-Vector3.up);
-        else if (direction == 2) plantEaterBody.Rotate(Vector3.right);
+        if (direction == 0) transform.localRotation = Quaternion.Euler(0, 90, 0);
+        else if (direction == 1) transform.localRotation = Quaternion.Euler(0, -90, 0);
+        else if (direction == 2) transform.localRotation = Quaternion.Euler(0, 180, 0);
+        else if (direction == 3) transform.localRotation = Quaternion.Euler(0, 0, 0);
 
 
     }
 
     public void PlantEaterMove()
     {
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        if (transform.position.x < GameObject.Find("Game").GetComponent<GameMain>().worldSize && transform.position.x > 0 &&
+            transform.position.z < GameObject.Find("Game").GetComponent<GameMain>().worldSize && transform.position.z > 0)
+        {
+            transform.Translate(-Vector3.right * GameObject.Find("Game").GetComponent<GameMain>().plantEaterSpeed * Time.deltaTime);
+        }
+        
     }
 }

@@ -11,6 +11,7 @@ public class GameMain : MonoBehaviour
     public int gamePoints;
     public bool creaturesAwake = true;
     public bool gamePaused = false;
+    public float plantEaterSpeed = .5f; // Set to .5 in normal speed and 2 for Fast Forward mode.
     public Light star1;
     public Text GameSpeedDisplayText;
     public Text gamePointsText;
@@ -26,6 +27,11 @@ public class GameMain : MonoBehaviour
     public List<Vector3> plantEaterStartPositions;
     public List<Transform> foodList;
     public List<Transform> plantEaterList;
+
+    public RawImage landOwnerImage;
+    public Texture landOwnerTexture;
+    
+
 
     //------------------------------------This code is used for debugging, remove before release.--------------------
     public bool foodOn = true;
@@ -179,6 +185,7 @@ public class GameMain : MonoBehaviour
 
         if (timer >= lengthOfDay)
         {
+
             timer = 0;
             day += 1;
             Debug.Log("Day: " + day);
@@ -221,6 +228,9 @@ public class GameMain : MonoBehaviour
         {
             gamePaused = false;
         }
+
+        // Update the plant eater's speed to match fast forward.
+        plantEaterSpeed = .5f;
     }
 
     public void ClickFastForward()
@@ -239,6 +249,9 @@ public class GameMain : MonoBehaviour
         {
             gamePaused = false;
         }
+
+        // Update the plant eater's speed to match fast forward.
+        plantEaterSpeed = 2f;
 
     }
 
@@ -259,10 +272,18 @@ public class GameMain : MonoBehaviour
             worldSize += 1;
             GameObject.Find("Grid").GetComponent<CreateGrid>().UpdateGrid();
             GameObject.Find("Grid").GetComponent<CreateGrid>().UpdateCameraPos();
-
         }
+
+        // Check to see if the Land Owner achievement is unlocked.
+        if (worldSize >= 20)
+        {
+            landOwnerImage.color = Color.white;
+            landOwnerImage.texture = landOwnerTexture;
+        }
+            
+
     }
-    
+
     public void ClickPlantEaters()
     {
         if (gamePoints > 0 && creaturesAwake)

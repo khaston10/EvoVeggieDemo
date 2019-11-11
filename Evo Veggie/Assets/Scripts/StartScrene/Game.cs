@@ -19,6 +19,7 @@ public class Game : MonoBehaviour
     public Text foodSpawnedText;
     public Text plantEatersText;
     public Text gamePointsText;
+    public Text achievementInformationText;
 
     // Start is called before the first frame update
     void Start()
@@ -116,8 +117,24 @@ public class Game : MonoBehaviour
     {
         SceneManager.LoadScene("GlossaryPlantEater");
     }
+
     public void ClickMeatEaterGloss()
     {
         SceneManager.LoadScene("GlossaryMeatEater");
+    }
+
+    public void ClickNinjaAchievement()
+    {
+        achievementInformationText.text = "Ninja: No plant eaters killed in a 10 days span";
+    }
+
+    public void ClickLandOwnerAchievement()
+    {
+        achievementInformationText.text = "Land Owner: World size is larger than 100";
+    }
+
+    public void ClickGenocideAchievement()
+    {
+        achievementInformationText.text = "Geonocide: 5 or more meat eaters killed in 1 day";
     }
 }
