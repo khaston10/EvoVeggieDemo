@@ -27,9 +27,12 @@ public class GameMain : MonoBehaviour
     public List<Vector3> plantEaterStartPositions;
     public List<Transform> foodList;
     public List<Transform> plantEaterList;
+    public int noPlantEatersKilledForXDays = 0;
 
     public RawImage landOwnerImage;
     public Texture landOwnerTexture;
+    public RawImage ninjaImage;
+    public Texture ninjaTexture;
     
 
 
@@ -76,6 +79,19 @@ public class GameMain : MonoBehaviour
             }
         }
 
+        // Stock food at the beginning of day 1.
+        for (int i = 0; i < foodSpawned; i++)
+        {
+            // Pick a random position.
+            int randPos = Random.Range(0, foodPositions.Count);
+
+            // Place food at position and remove its position from the available list, then place the transform in the foodList. 
+            Transform f = Instantiate(food);
+            f.localPosition = foodPositions[randPos];
+            foodPositions.RemoveAt(randPos);
+            foodList.Add(f);
+        }
+
     }
 
     // Update is called once per frame
@@ -89,18 +105,6 @@ public class GameMain : MonoBehaviour
             
         }
 
-        // Restock food at the beginning of each day.
-        if (foodList.Count < foodSpawned && foodOn && creaturesAwake)
-        {
-            // Pick a random position.
-            int randPos = Random.Range(0, foodPositions.Count);
-
-            // Place food at position and remove its position from the available list, then place the transform in the foodList. 
-            Transform f = Instantiate(food);
-            f.localPosition = foodPositions[randPos];
-            foodPositions.RemoveAt(randPos);
-            foodList.Add(f);
-        }
 
         //------------------------------------This code is used for debugging, remove before release.--------------------
         if (foodOn == false)
@@ -185,10 +189,45 @@ public class GameMain : MonoBehaviour
 
         if (timer >= lengthOfDay)
         {
+            // Restock food at the beginning of each day.
+            int currentFoodAmount = foodList.Count;
+            for (int i = currentFoodAmount; i < foodSpawned; i++ )
+            {
+                // Pick a random position.
+                int randPos = Random.Range(0, foodPositions.Count);
+
+                // Place food at position and remove its position from the available list, then place the transform in the foodList. 
+                Transform f = Instantiate(food);
+                f.localPosition = foodPositions[randPos];
+                foodPositions.RemoveAt(randPos);
+                foodList.Add(f);
+            }
+            // Increase the NoPlantEatersKilled by 1. This is used for the Ninja achievement.
+            noPlantEatersKilledForXDays += 1;
+
+            // Check through the list of plant eaters and destroy plant eaters that did not survive.
+            for (int i = plantEaterList.Count - 1; i >= 0; i--)
+            {
+                if (plantEaterList[i].GetComponent<PlantEaterContoller>().foodEaten == 0)
+                {
+                    Destroy(plantEaterList[i].gameObject);
+                    plantEaterList.RemoveAt(i);
+                    plantEaters -= 1;
+
+                    // Reset the plantEatersKilledStat used for achievements.
+                    if (noPlantEatersKilledForXDays != 0) noPlantEatersKilledForXDays = 0;
+                }
+            }
+
+            // Check to see if the Ninja Achievement has been unlocked.
+            if (noPlantEatersKilledForXDays == 10)
+            {
+                ninjaImage.color = Color.white;
+                ninjaImage.texture = ninjaTexture;
+            }
 
             timer = 0;
             day += 1;
-            Debug.Log("Day: " + day);
 
         }
     }

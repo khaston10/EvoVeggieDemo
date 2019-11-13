@@ -926,8 +926,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6408433173453875369}
   - component: {fileID: 8377572020256044174}
-  - component: {fileID: -5944024884497302441}
-  - component: {fileID: -6732730209779369247}
   m_Layer: 0
   m_Name: plantEaterPrefab
   m_TagString: Untagged
@@ -971,37 +969,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5289282, y: 2.322918, z: 1.4245862}
   m_Center: {x: -0.038597956, y: -0.0062382966, z: 0.21229312}
---- !u!54 &-5944024884497302441
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7977016080555760314}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 4
-  m_CollisionDetection: 0
---- !u!114 &-6732730209779369247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7977016080555760314}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1c8b5bb132fa6b429dac47801237fcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 0.5
-  timeBetweenDirectionChange: 2
-  timer: 0
 --- !u!1 &8299485042026401210
 GameObject:
   m_ObjectHideFlags: 0

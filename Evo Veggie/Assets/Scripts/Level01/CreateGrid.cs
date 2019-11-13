@@ -8,6 +8,10 @@ public class CreateGrid : MonoBehaviour
     public Transform wall;
     public Camera cam;
     public List<Vector3> positions = new List<Vector3>();
+    Transform wall1;
+    Transform wall2;
+    Transform wall3;
+    Transform wall4;
 
 
     // Start is called before the first frame update
@@ -34,14 +38,21 @@ public class CreateGrid : MonoBehaviour
         UpdateCameraPos();
 
         // Create retaining walls in world to keep plant eaters and meat eaters from getting stuck.
-        Transform wall1 = Instantiate(wall);
-        Transform wall2 = Instantiate(wall);
+        wall1 = Instantiate(wall);
+        wall2 = Instantiate(wall);
+        wall3 = Instantiate(wall);
+        wall4 = Instantiate(wall);
 
-        wall1.localScale = new Vector3(GameObject.Find("Game").GetComponent<GameMain>().worldSize, 1f, .1f);
-        wall1.localPosition = new Vector3((GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2)- .5f, 1f, 0f);
-        wall2.localScale = new Vector3(GameObject.Find("Game").GetComponent<GameMain>().worldSize, 1f, .1f);
+        wall1.localScale = new Vector3(GameObject.Find("Game").GetComponent<GameMain>().worldSize + 1, 2f, .3f);
+        wall1.localPosition = new Vector3((GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2) - .5f, 1f, -.5f);
+        wall2.localScale = new Vector3(GameObject.Find("Game").GetComponent<GameMain>().worldSize + 1, 2f, .3f);
         wall2.localPosition = new Vector3((GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2) - .5f, 1f,
             GameObject.Find("Game").GetComponent<GameMain>().worldSize - .5f);
+        wall3.localScale = new Vector3(.3f, 2f, GameObject.Find("Game").GetComponent<GameMain>().worldSize + 1);
+        wall3.localPosition = new Vector3(-.5f, 1f, (GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2) - .5f);
+        wall4.localScale = new Vector3(.3f, 2f, GameObject.Find("Game").GetComponent<GameMain>().worldSize + 1);
+        wall4.localPosition = new Vector3(GameObject.Find("Game").GetComponent<GameMain>().worldSize - .5f, 1f, 
+            (GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2) - .5f);
     }
 
     // Update is called once per frame
@@ -86,6 +97,16 @@ public class CreateGrid : MonoBehaviour
         }
 
         // Place retaining walls in world to keep plant eaters and meat eaters from getting stuck.
+        wall1.localScale = new Vector3(GameObject.Find("Game").GetComponent<GameMain>().worldSize, 2f, .3f);
+        wall1.localPosition = new Vector3((GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2) - .5f, 1f, -.5f);
+        wall2.localScale = new Vector3(GameObject.Find("Game").GetComponent<GameMain>().worldSize, 2f, .3f);
+        wall2.localPosition = new Vector3((GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2) - .5f, 1f,
+            GameObject.Find("Game").GetComponent<GameMain>().worldSize - .5f);
+        wall3.localScale = new Vector3(.3f, 2f, GameObject.Find("Game").GetComponent<GameMain>().worldSize);
+        wall3.localPosition = new Vector3(-.5f, 1f, (GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2) - .5f);
+        wall4.localScale = new Vector3(.3f, 2f, GameObject.Find("Game").GetComponent<GameMain>().worldSize);
+        wall4.localPosition = new Vector3(GameObject.Find("Game").GetComponent<GameMain>().worldSize - .5f, 1f,
+            (GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2) - .5f);
 
 
     }

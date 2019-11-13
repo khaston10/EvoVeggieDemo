@@ -707,8 +707,11 @@ MonoBehaviour:
   plantEaterStartPositions: []
   foodList: []
   plantEaterList: []
+  noPlantEatersKilledForXDays: 0
   landOwnerImage: {fileID: 554674041}
   landOwnerTexture: {fileID: 2800000, guid: 48f57060d791b24439998fe8b9dc9374, type: 3}
+  ninjaImage: {fileID: 121002157}
+  ninjaTexture: {fileID: 2800000, guid: 4f49d70235cb53b49967f5c89c35a200, type: 3}
   foodOn: 1
   movePlanetOn: 1
   moveStarOn: 1
@@ -1698,7 +1701,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1

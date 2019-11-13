@@ -19,7 +19,19 @@ public class FoodController : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("entered");
-        Destroy(gameObject);
+        if (other.CompareTag("plantEater"))
+        {
+            GameObject.Find("Game").GetComponent<GameMain>().foodPositions.Add(transform.localPosition);
+            GameObject.Find("Game").GetComponent<GameMain>().foodList.Remove(transform);
+            Destroy(transform.gameObject);
+            other.GetComponent<PlantEaterContoller>().foodEaten += 1;
+        }
+        else
+        {
+            Debug.Log("No Worries");
+        }
+        
+     
+       
     }
 }

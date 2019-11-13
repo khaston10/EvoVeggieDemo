@@ -3627,10 +3627,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd704e1dd82649243a96d59610fc2423, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldSize: 10
-  foodSpawned: 10
-  plantEaters: 10
-  gamePoints: 50
+  worldSize: 5
+  foodSpawned: 5
+  plantEaters: 1
+  gamePoints: 100
 --- !u!4 &1058897868
 Transform:
   m_ObjectHideFlags: 0
