@@ -116,6 +116,5 @@ public class CreateGrid : MonoBehaviour
     {
         Vector3 camPos = new Vector3(GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2, GameObject.Find("Game").GetComponent<GameMain>().worldSize, -GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2);
         cam.transform.localPosition = camPos;
-        //cam.transform.Rotate(45f, 0f, 0f);
     }
 }

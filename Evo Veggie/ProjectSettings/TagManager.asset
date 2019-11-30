@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Food
   - plantEater
+  - meatEater
   layers:
   - Default
   - TransparentFX

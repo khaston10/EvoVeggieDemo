@@ -8,10 +8,15 @@ public class GameMain : MonoBehaviour
     public int worldSize;
     public int foodSpawned;
     public int plantEaters;
+    public int meatEaters;
     public int gamePoints;
+    public int daysBetweenMeatEaterSpawn;
+    public int daysUntilMeatEaterStarves;
+    public int meaterEaterSpawnCounter = 0;
     public bool creaturesAwake = true;
     public bool gamePaused = false;
     public float plantEaterSpeed = .5f; // Set to .5 in normal speed and 2 for Fast Forward mode.
+    public float meatEaterSpeed = .5f; // Set to .5 in normal speed and 2 for Fast Forward mode.
     public Light star1;
     public Text GameSpeedDisplayText;
     public Text gamePointsText;
@@ -23,17 +28,24 @@ public class GameMain : MonoBehaviour
     public Transform star1Body;
     public Transform food;
     public Transform plantEater;
+    public Transform meatEater;
     public List<Vector3> foodPositions;
     public List<Vector3> plantEaterStartPositions;
     public List<Transform> foodList;
     public List<Transform> plantEaterList;
+    public List<Transform> meatEaterList;
     public int noPlantEatersKilledForXDays = 0;
+    private int worldSizeLimit = 30;
 
     public RawImage landOwnerImage;
     public Texture landOwnerTexture;
     public RawImage ninjaImage;
     public Texture ninjaTexture;
-    
+    public RawImage survivalistImage;
+    public Texture survivalistTexture;
+    public RawImage glutonImage;
+    public Texture glutonTexture;
+
 
 
     //------------------------------------This code is used for debugging, remove before release.--------------------
@@ -41,6 +53,7 @@ public class GameMain : MonoBehaviour
     public bool movePlanetOn = true;
     public bool moveStarOn = true;
     public bool plantEatersOn = true;
+    public bool meathEatersOn = true;
 
     private int day = 1;
     private float timer = 0.0f;
@@ -56,6 +69,8 @@ public class GameMain : MonoBehaviour
     private float planetYPos;
     private float planetZPos;
     private float planetXPos;
+    private Color starvingPlantEater = new Color(.8f, .7f, .3f, .1f);
+    private Color starvingMeatEater = new Color(.1f, .1f, .1f, .1f);
 
 
     // Start is called before the first frame update
@@ -130,6 +145,20 @@ public class GameMain : MonoBehaviour
 
         }
 
+        // Restock meat eaters at the beginning of the day if is time, then reset the counter.
+        if (meaterEaterSpawnCounter == daysBetweenMeatEaterSpawn && meatEaterList.Count < meatEaters)
+        {
+            // Pick a random position.
+            int randPos = Random.Range(0, plantEaterStartPositions.Count);
+
+            // Place meat eater at position, then place the transform in the meatEaterList. 
+            Transform m = Instantiate(meatEater);
+            m.localPosition = plantEaterStartPositions[randPos];
+            meatEaterList.Add(m);
+        }
+
+        else if (meaterEaterSpawnCounter > daysBetweenMeatEaterSpawn) meaterEaterSpawnCounter = 0;
+
         //------------------------------------This code is used for debugging, remove before release.--------------------
         if (plantEatersOn == false)
         {
@@ -154,6 +183,23 @@ public class GameMain : MonoBehaviour
         if (timer >= (lengthOfDay / 2) && creaturesAwake == true)
         {
             creaturesAwake = false;
+
+            // Change the color of creatures skin if they are starving and going to die.
+            for (int i = 0; i < plantEaterList.Count; i++)
+            {
+                if (plantEaterList[i].GetComponent<PlantEaterContoller>().foodEaten == 0)
+                {
+                    plantEaterList[i].GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = starvingPlantEater;
+                }
+            }
+
+            for (int i = 0; i < meatEaterList.Count; i++)
+            {
+                if (meatEaterList[i].GetComponent<MeatEaterContoller>().daysSinceLastEaten == daysUntilMeatEaterStarves)
+                {
+                    meatEaterList[i].GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = starvingMeatEater;
+                }
+            }
         }
 
         else if (timer < (lengthOfDay / 2) && creaturesAwake == false)
@@ -202,6 +248,7 @@ public class GameMain : MonoBehaviour
                 foodPositions.RemoveAt(randPos);
                 foodList.Add(f);
             }
+
             // Increase the NoPlantEatersKilled by 1. This is used for the Ninja achievement.
             noPlantEatersKilledForXDays += 1;
 
@@ -217,6 +264,36 @@ public class GameMain : MonoBehaviour
                     // Reset the plantEatersKilledStat used for achievements.
                     if (noPlantEatersKilledForXDays != 0) noPlantEatersKilledForXDays = 0;
                 }
+
+                // Check to see if the Gluton Achievement has been unlocked.
+                else if (plantEaterList[i].GetComponent<PlantEaterContoller>().foodEaten >= 5)
+                {
+                    glutonImage.color = Color.white;
+                    glutonImage.texture = glutonTexture;
+                }
+            }
+
+            // Check through the list of meat eaters and destroy meat eaters that did not survive.
+            for (int i = meatEaterList.Count - 1; i >= 0; i--)
+            {
+                if (meatEaterList[i].GetComponent<MeatEaterContoller>().daysSinceLastEaten >= daysUntilMeatEaterStarves)
+                {
+                    Destroy(meatEaterList[i].gameObject);
+                    meatEaterList.RemoveAt(i);
+                }
+
+            }
+
+            // Reset food Eaten for plant eaters.
+            for (int i = 0; i < plantEaterList.Count; i++)
+            {
+                plantEaterList[i].GetComponent<PlantEaterContoller>().foodEaten = 0;
+            }
+
+            // Add 1 days to meat eaters starve counter.
+            for (int i = 0; i < meatEaterList.Count; i++)
+            {
+                meatEaterList[i].GetComponent<MeatEaterContoller>().daysSinceLastEaten += 1;
             }
 
             // Check to see if the Ninja Achievement has been unlocked.
@@ -226,9 +303,16 @@ public class GameMain : MonoBehaviour
                 ninjaImage.texture = ninjaTexture;
             }
 
+            // Check to see if the Survivalist Achievement has been unlocked.
+            if (day == 40)
+            {
+                survivalistImage.color = Color.white;
+                survivalistImage.texture = survivalistTexture;
+            }
+
             timer = 0;
             day += 1;
-
+            meaterEaterSpawnCounter += 1;
         }
     }
 
@@ -268,8 +352,9 @@ public class GameMain : MonoBehaviour
             gamePaused = false;
         }
 
-        // Update the plant eater's speed to match fast forward.
+        // Update the plant eater's and meat eater's speed to match fast forward.
         plantEaterSpeed = .5f;
+        meatEaterSpeed = .5f;
     }
 
     public void ClickFastForward()
@@ -289,8 +374,9 @@ public class GameMain : MonoBehaviour
             gamePaused = false;
         }
 
-        // Update the plant eater's speed to match fast forward.
+        // Update the plant eater's and meat eater's speed to match fast forward.
         plantEaterSpeed = 2f;
+        meatEaterSpeed = 2f;
 
     }
 
@@ -305,7 +391,7 @@ public class GameMain : MonoBehaviour
 
     public void ClickWorldSize()
     {
-        if (gamePoints > 0)
+        if (gamePoints > 0 && worldSize < worldSizeLimit)
         {
             gamePoints -= 1;
             worldSize += 1;

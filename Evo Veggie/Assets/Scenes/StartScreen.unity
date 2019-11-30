@@ -1082,7 +1082,7 @@ GameObject:
   - component: {fileID: 202696917}
   - component: {fileID: 202696916}
   m_Layer: 5
-  m_Name: AchievementTBA1
+  m_Name: AchievementSurvivalist
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1150,7 +1150,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 202696917}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 884274907}
+        m_MethodName: ClickSurvivalistAchievement
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &202696917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1277,7 +1288,7 @@ GameObject:
   - component: {fileID: 282798564}
   - component: {fileID: 282798563}
   m_Layer: 5
-  m_Name: AchievementTBA2
+  m_Name: AchievementGluton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1345,7 +1356,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 282798564}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 884274907}
+        m_MethodName: ClickGlutonAchievement
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &282798564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4200,7 +4222,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 2f04d65a0cb047842b4fd1bde5f8623d, type: 3}
+  m_Texture: {fileID: 2800000, guid: 5a1a5fa8de727434fbcdeedbaa350e3a, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -5382,7 +5404,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 2f04d65a0cb047842b4fd1bde5f8623d, type: 3}
+  m_Texture: {fileID: 2800000, guid: 93b15ef861d9f3245bfcb4b7e68e0f33, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0

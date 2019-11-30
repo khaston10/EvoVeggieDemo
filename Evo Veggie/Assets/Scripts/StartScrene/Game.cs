@@ -137,4 +137,14 @@ public class Game : MonoBehaviour
     {
         achievementInformationText.text = "Geonocide: 5 or more meat eaters killed in 1 day";
     }
+
+    public void ClickSurvivalistAchievement()
+    {
+        achievementInformationText.text = "Survivalist: Plant Eaters must survive 40 days.";
+    }
+
+    public void ClickGlutonAchievement()
+    {
+        achievementInformationText.text = "Gluton: A PlantEater must eat 5 or more pants in one day.";
+    }
 }

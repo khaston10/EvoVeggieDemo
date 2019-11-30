@@ -2,28 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlantEaterContoller : MonoBehaviour
+public class MeatEaterContoller : MonoBehaviour
 {
     public int timeBetweenDirectionChange = 1;
-    public int foodEaten = 0;
-    public bool isStarving = false;
+    public int daysSinceLastEaten = 0;
 
     private int direction = 0; // 0: Move y+, 1: Move y-, 2: Move x+, 3: Move x-
     private float timer = 0.0f;
-    
 
     // Start is called before the first frame update
     void Start()
     {
-   
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        
-
         // Start timer for the plant eater's movement.
         if (GameObject.Find("Game").GetComponent<GameMain>().gamePaused != true)
         {
@@ -33,18 +28,18 @@ public class PlantEaterContoller : MonoBehaviour
         // Check to see if it is time to update plant eater's direction.
         if (timeBetweenDirectionChange < timer)
         {
-            PlantEaterChangeDirection();
+            MeatEaterChangeDirection();
             timer = 0;
         }
 
         // Move plant eater if creatures are awake.
         if (GameObject.Find("Game").GetComponent<GameMain>().creaturesAwake && GameObject.Find("Game").GetComponent<GameMain>().gamePaused != true)
         {
-            PlantEaterMove();
-        }     
-    }
+            MeatEaterMove();
+        }
 
-    public void PlantEaterChangeDirection()
+    }
+    public void MeatEaterChangeDirection()
     {
         direction = Random.Range(0, 4);
 
@@ -54,23 +49,28 @@ public class PlantEaterContoller : MonoBehaviour
         else if (direction == 3) transform.localRotation = Quaternion.Euler(0, 0, 0);
 
 
-    } 
+    }
 
-    public void PlantEaterMove()
+    public void MeatEaterMove()
     {
-        transform.Translate(-Vector3.right * GameObject.Find("Game").GetComponent<GameMain>().plantEaterSpeed * Time.deltaTime);
+        transform.Translate(-Vector3.right * GameObject.Find("Game").GetComponent<GameMain>().meatEaterSpeed * Time.deltaTime);
     }
 
     private void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.tag == "Food")
+        if (col.gameObject.tag == "meatEater")
         {
-           
+            Physics.IgnoreCollision(col.collider, GetComponent<Collider>());
         }
 
         else if (col.gameObject.tag == "plantEater")
         {
-            Physics.IgnoreCollision(col.collider, GetComponent<Collider>());
+            GameObject.Find("Game").GetComponent<GameMain>().plantEaters -= 1;
+            GameObject.Find("Game").GetComponent<GameMain>().plantEaterList.Remove(col.transform);
+            Destroy(col.transform.gameObject);
+            daysSinceLastEaten = 0;
         }
     }
 }
+
+
