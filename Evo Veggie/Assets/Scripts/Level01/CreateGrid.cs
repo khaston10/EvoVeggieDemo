@@ -7,7 +7,9 @@ public class CreateGrid : MonoBehaviour
     public Transform gridPreFab;
     public Transform wall;
     public Camera cam;
+    public Vector3 camRotatePoint;
     public List<Vector3> positions = new List<Vector3>();
+    public float ySpeed = 20.0f;
     Transform wall1;
     Transform wall2;
     Transform wall3;
@@ -53,12 +55,18 @@ public class CreateGrid : MonoBehaviour
         wall4.localScale = new Vector3(.3f, 2f, GameObject.Find("Game").GetComponent<GameMain>().worldSize + 1);
         wall4.localPosition = new Vector3(GameObject.Find("Game").GetComponent<GameMain>().worldSize - .5f, 1f, 
             (GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2) - .5f);
+
+        // Set the rotation point for the camera to rotate around when the user operates camera.
+        camRotatePoint = new Vector3((GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2), 0f, (GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2));
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetMouseButton(2))
+        {
+            cam.transform.RotateAround(camRotatePoint, Vector3.up, Input.GetAxis("Mouse X") * ySpeed);
+        }
     }
 
     // Update Grid when user presses the world size button.
@@ -114,7 +122,13 @@ public class CreateGrid : MonoBehaviour
     // Update camera position
     public void UpdateCameraPos()
     {
+        // Set the rotation point for the camera to rotate around when the user operates camera.
+        camRotatePoint = new Vector3((GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2), 0f, (GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2));
+
         Vector3 camPos = new Vector3(GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2, GameObject.Find("Game").GetComponent<GameMain>().worldSize, -GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2);
         cam.transform.localPosition = camPos;
+        cam.transform.LookAt(camRotatePoint);
+
+        
     }
 }

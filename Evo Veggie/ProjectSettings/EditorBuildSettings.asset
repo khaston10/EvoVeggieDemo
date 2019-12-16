@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GlossaryMeatEater.unity
     guid: a42bf64caa9f4204383f1395fad21114
+  - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: 7c51e7e1af88d5343936bd88ebbf0050
   m_configObjects: {}

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlantEaterContoller : MonoBehaviour
+public class TutPlantEaterContoller : MonoBehaviour
 {
     public int timeBetweenDirectionChange = 1;
     public int foodEaten = 1;
@@ -10,13 +10,13 @@ public class PlantEaterContoller : MonoBehaviour
 
     private int direction = 0; // 0: Move y+, 1: Move y-, 2: Move x+, 3: Move x-
     private float timer = 0.0f;
-    
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-   
+
     }
 
     // Update is called once per frame
@@ -24,7 +24,7 @@ public class PlantEaterContoller : MonoBehaviour
     {
 
         // Start timer for the plant eater's movement.
-        if (GameObject.Find("Game").GetComponent<GameMain>().gamePaused != true)
+        if (GameObject.Find("Game").GetComponent<TutGameMain>().gamePaused != true)
         {
             timer += Time.deltaTime;
         }
@@ -37,10 +37,10 @@ public class PlantEaterContoller : MonoBehaviour
         }
 
         // Move plant eater if creatures are awake.
-        if (GameObject.Find("Game").GetComponent<GameMain>().creaturesAwake && GameObject.Find("Game").GetComponent<GameMain>().gamePaused != true)
+        if (GameObject.Find("Game").GetComponent<TutGameMain>().creaturesAwake && GameObject.Find("Game").GetComponent<TutGameMain>().gamePaused != true)
         {
             PlantEaterMove();
-        }     
+        }
     }
 
     public void PlantEaterChangeDirection()
@@ -53,15 +53,15 @@ public class PlantEaterContoller : MonoBehaviour
         else if (direction == 3) transform.localRotation = Quaternion.Euler(0, 0, 0);
 
 
-    } 
+    }
 
     public void PlantEaterMove()
     {
-        if (GameObject.Find("Game").GetComponent<GameMain>().caffeineSpeedOn)
+        if (GameObject.Find("Game").GetComponent<TutGameMain>().caffeineSpeedOn)
         {
-            transform.Translate(-Vector3.right * GameObject.Find("Game").GetComponent<GameMain>().caffeinePlantEaterSpeed * Time.deltaTime);
+            transform.Translate(-Vector3.right * GameObject.Find("Game").GetComponent<TutGameMain>().caffeinePlantEaterSpeed * Time.deltaTime);
         }
-        else transform.Translate(-Vector3.right * GameObject.Find("Game").GetComponent<GameMain>().plantEaterSpeed * Time.deltaTime);
+        else transform.Translate(-Vector3.right * GameObject.Find("Game").GetComponent<TutGameMain>().plantEaterSpeed * Time.deltaTime);
 
     }
 
@@ -69,7 +69,7 @@ public class PlantEaterContoller : MonoBehaviour
     {
         if (col.gameObject.tag == "Food")
         {
-            //GameObject.Find("Game").GetComponent<GameMain>().gamePoints += 1;
+            //GameObject.Find("Game").GetComponent<TutGameMain>().gamePoints += 1;
         }
 
         else if (col.gameObject.tag == "plantEater")

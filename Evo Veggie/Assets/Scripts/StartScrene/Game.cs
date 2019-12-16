@@ -123,6 +123,16 @@ public class Game : MonoBehaviour
         SceneManager.LoadScene("GlossaryMeatEater");
     }
 
+    public void ClickObjective()
+    {
+        achievementInformationText.text = "OBJECTIVE: Help the Plant Eaters survive and see if you can unlock all Upgrades!";
+    }
+
+    public void ClickUpgrade()
+    {
+        achievementInformationText.text = "UPGRADE: Slayer - Eliminates all Meat Eaters. Freeze - Temporarily freezes Meat Eaters until the end of the day.";
+    }
+
     public void ClickNinjaAchievement()
     {
         achievementInformationText.text = "Ninja: No plant eaters killed in a 10 days span";
@@ -146,5 +156,34 @@ public class Game : MonoBehaviour
     public void ClickGlutonAchievement()
     {
         achievementInformationText.text = "Gluton: A PlantEater must eat 5 or more pants in one day.";
+    }
+    public void ClickUnlockedAchievement()
+    {
+        achievementInformationText.text = "Unlocked: Unlock all upgrades.";
+    }
+
+    public void ClickSlayerUpgrade()
+    {
+        achievementInformationText.text = "Slayer: Kills all Meat Eaters on Flat World.";
+    }
+
+    public void ClickFreezeUpgrade()
+    {
+        achievementInformationText.text = "Freeze: Freezes Meat Eaters for the rest of the day.";
+    }
+
+    public void ClickFeedUpgrade()
+    {
+        achievementInformationText.text = "Feed: Instantly feed all Plant Eaters.";
+    }
+
+    public void ClickCaffeineUpgrade()
+    {
+        achievementInformationText.text = "Caffeine : Plant Eaters move 3x faster for the rest of the day.";
+    }
+
+    public void ClickTutorial()
+    {
+        SceneManager.LoadScene(sceneName: "Tutorial");
     }
 }

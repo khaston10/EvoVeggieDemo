@@ -9,6 +9,7 @@ public class MeatEaterContoller : MonoBehaviour
 
     private int direction = 0; // 0: Move y+, 1: Move y-, 2: Move x+, 3: Move x-
     private float timer = 0.0f;
+    private Color FedMeatEater = new Color(.55f, .33f, .04f, 1f);
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +34,8 @@ public class MeatEaterContoller : MonoBehaviour
         }
 
         // Move plant eater if creatures are awake.
-        if (GameObject.Find("Game").GetComponent<GameMain>().creaturesAwake && GameObject.Find("Game").GetComponent<GameMain>().gamePaused != true)
+        if (GameObject.Find("Game").GetComponent<GameMain>().creaturesAwake && GameObject.Find("Game").GetComponent<GameMain>().gamePaused != true 
+            && GameObject.Find("Game").GetComponent<GameMain>().meatEatersFrozen == false)
         {
             MeatEaterMove();
         }
@@ -69,6 +71,9 @@ public class MeatEaterContoller : MonoBehaviour
             GameObject.Find("Game").GetComponent<GameMain>().plantEaterList.Remove(col.transform);
             Destroy(col.transform.gameObject);
             daysSinceLastEaten = 0;
+            transform.GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = FedMeatEater;
+            transform.GetChild(0).GetChild(2).GetComponent<Renderer>().material.color = FedMeatEater;
+            transform.GetChild(0).GetChild(3).GetComponent<Renderer>().material.color = FedMeatEater;
         }
     }
 }

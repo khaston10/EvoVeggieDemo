@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameMain : MonoBehaviour
+public class TutGameMain : MonoBehaviour
 {
     public int worldSize;
     public int foodSpawned;
@@ -111,11 +111,7 @@ public class GameMain : MonoBehaviour
         feedSlider.gameObject.SetActive(false);
         caffeineSlider.gameObject.SetActive(false);
 
-
         daysUntilMeatEaterCounter = daysBetweenMeatEaterSpawn;
-        daysUntilMeatEatersText.text = daysUntilMeatEaterCounter.ToString() + " Days";
-        daysUntilMeatEaterCounter -= 1;
-
 
         // Populate the positions list with all possible positions for grids.
         for (int i = 0; i < worldSize; i++)
@@ -152,7 +148,7 @@ public class GameMain : MonoBehaviour
         {
             timer += Time.deltaTime;
             plantEaterTimer += Time.deltaTime;
-            
+
         }
 
 
@@ -248,7 +244,7 @@ public class GameMain : MonoBehaviour
             planetXPos = worldSize * Mathf.Sin(timerSpeedCoefficient * timer) + worldSize / 2;
             planet1.position = new Vector3(planetXPos, planetYPos, planetZPos);
         }
-        
+
 
         // Move the source of light, star1.
         star1.intensity = worldSize / 5;
@@ -262,7 +258,7 @@ public class GameMain : MonoBehaviour
         {
             // Restock food at the beginning of each day.
             int currentFoodAmount = foodList.Count;
-            for (int i = currentFoodAmount; i < foodSpawned; i++ )
+            for (int i = currentFoodAmount; i < foodSpawned; i++)
             {
                 // Pick a random position.
                 int randPos = Random.Range(0, foodPositions.Count);
@@ -280,7 +276,7 @@ public class GameMain : MonoBehaviour
             // Check through the list of plant eaters and destroy plant eaters that did not survive.
             for (int i = plantEaterList.Count - 1; i >= 0; i--)
             {
-                if (plantEaterList[i].GetComponent<PlantEaterContoller>().foodEaten == 0)
+                if (plantEaterList[i].GetComponent<TutPlantEaterContoller>().foodEaten == 0)
                 {
                     Destroy(plantEaterList[i].gameObject);
                     plantEaterList.RemoveAt(i);
@@ -291,7 +287,7 @@ public class GameMain : MonoBehaviour
                 }
 
                 // Check to see if the Gluton Achievement has been unlocked.
-                else if (plantEaterList[i].GetComponent<PlantEaterContoller>().foodEaten >= 5)
+                else if (plantEaterList[i].GetComponent<TutPlantEaterContoller>().foodEaten >= 5)
                 {
                     glutonImage.color = Color.white;
                     glutonImage.texture = glutonTexture;
@@ -312,7 +308,7 @@ public class GameMain : MonoBehaviour
             // Reset food Eaten for plant eaters.
             for (int i = 0; i < plantEaterList.Count; i++)
             {
-                plantEaterList[i].GetComponent<PlantEaterContoller>().foodEaten = 0;
+                plantEaterList[i].GetComponent<TutPlantEaterContoller>().foodEaten = 0;
             }
 
             // Add 1 days to meat eaters starve counter.
@@ -335,10 +331,12 @@ public class GameMain : MonoBehaviour
                 survivalistImage.texture = survivalistTexture;
             }
 
-            // Update the daysUntilMeatEater text updated.
-            daysUntilMeatEatersText.text = daysUntilMeatEaterCounter.ToString() + " Days";
-            if (daysUntilMeatEaterCounter == 0) daysUntilMeatEaterCounter = daysBetweenMeatEaterSpawn;
-            else daysUntilMeatEaterCounter -= 1;
+            // Check to see if Tutorial script needs to start Task6.
+            if (GetComponent<Tutorial>().task5 && GetComponent<Tutorial>().task6 == false && foodSpawned >= 10)
+            {
+                GetComponent<Tutorial>().Task6();
+            }
+
 
             timer = 0;
             day += 1;
@@ -354,7 +352,7 @@ public class GameMain : MonoBehaviour
             // Change the color of creatures skin if they are starving and going to die.
             for (int i = 0; i < plantEaterList.Count; i++)
             {
-                if (plantEaterList[i].GetComponent<PlantEaterContoller>().foodEaten == 0)
+                if (plantEaterList[i].GetComponent<TutPlantEaterContoller>().foodEaten == 0)
                 {
                     plantEaterList[i].GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = starvingPlantEater;
                 }
@@ -393,27 +391,32 @@ public class GameMain : MonoBehaviour
 
     public void ClickForward()
     {
-        // Only makes changes if the lengthOfDay = 360, meaning forward mode was occuring. 
-        if (timerSpeedCoefficient == 1)
+        if (GetComponent<Tutorial>().task1)
         {
-            lengthOfDay = 25.12f;
-            timerSpeedCoefficient = .25f;
-            timer *= 4;
-            gameSpeed = 1;
-        }
+            // Only makes changes if the lengthOfDay = 360, meaning forward mode was occuring. 
+            if (timerSpeedCoefficient == 1)
+            {
+                lengthOfDay = 25.12f;
+                timerSpeedCoefficient = .25f;
+                timer *= 4;
+                gameSpeed = 1;
+            }
 
-        // only makes changes when this button is pushed while game is paused.
-        if (gamePaused == true)
-        {
-            gamePaused = false;
-        }
+            // only makes changes when this button is pushed while game is paused.
+            if (gamePaused == true)
+            {
+                gamePaused = false;
+            }
 
-        // Update the plant eater's and meat eater's speed to match fast forward.
-        plantEaterSpeed = .5f;
-        caffeinePlantEaterSpeed = 1.5f;
-        meatEaterSpeed = .5f;
-        slowSpeedMeter = .001f;
-        medSpeedMeter = .01f;
+            // Update the plant eater's and meat eater's speed to match fast forward.
+            plantEaterSpeed = .5f;
+            caffeinePlantEaterSpeed = 1.5f;
+            meatEaterSpeed = .5f;
+            slowSpeedMeter = .001f;
+            medSpeedMeter = .01f;
+
+        }
+        
     }
 
     public void ClickFastForward()
@@ -444,7 +447,7 @@ public class GameMain : MonoBehaviour
 
     public void ClickFoodSpawned()
     {
-        if (gamePoints > 0 && foodPositions.Count > 0)
+        if (gamePoints > 0 && foodPositions.Count > 0 && GetComponent<Tutorial>().task5)
         {
             gamePoints -= 1;
             foodSpawned += 1;
@@ -453,12 +456,12 @@ public class GameMain : MonoBehaviour
 
     public void ClickWorldSize()
     {
-        if (gamePoints > 0 && worldSize < worldSizeLimit)
+        if (gamePoints > 0 && worldSize < worldSizeLimit && GetComponent<Tutorial>().task6)
         {
             gamePoints -= 1;
             worldSize += 1;
-            GameObject.Find("Grid").GetComponent<CreateGrid>().UpdateGrid();
-            GameObject.Find("Grid").GetComponent<CreateGrid>().UpdateCameraPos();
+            GameObject.Find("Grid").GetComponent<TutCreateGrid>().UpdateGrid();
+            GameObject.Find("Grid").GetComponent<TutCreateGrid>().UpdateCameraPos();
         }
 
         // Check to see if the Land Owner achievement is unlocked.
@@ -467,13 +470,13 @@ public class GameMain : MonoBehaviour
             landOwnerImage.color = Color.white;
             landOwnerImage.texture = landOwnerTexture;
         }
-            
+
 
     }
 
     public void ClickPlantEaters()
     {
-        if (gamePoints > 0)
+        if (gamePoints > 0 && GetComponent<Tutorial>().task2)
         {
             gamePoints -= 1;
             plantEaters += 1;
@@ -524,7 +527,7 @@ public class GameMain : MonoBehaviour
                 unlockedImage.texture = unlockedTexture;
             }
         }
-        
+
     }
 
     public void ClickFreezeUpgrade()
@@ -570,7 +573,7 @@ public class GameMain : MonoBehaviour
             // Feed all plant eaters and change their skin color.
             for (int i = 0; i < plantEaterList.Count; i++)
             {
-                plantEaterList[i].GetComponent<PlantEaterContoller>().foodEaten += 1;
+                plantEaterList[i].GetComponent<TutPlantEaterContoller>().foodEaten += 1;
                 plantEaterList[i].GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = FedPlantEater;
             }
 
@@ -584,7 +587,7 @@ public class GameMain : MonoBehaviour
             // Feed all plant eaters and change their skin color.
             for (int i = 0; i < plantEaterList.Count; i++)
             {
-                plantEaterList[i].GetComponent<PlantEaterContoller>().foodEaten += 1;
+                plantEaterList[i].GetComponent<TutPlantEaterContoller>().foodEaten += 1;
                 plantEaterList[i].GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = FedPlantEater;
             }
 
