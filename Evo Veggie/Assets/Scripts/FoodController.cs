@@ -5,6 +5,7 @@ using UnityEngine;
 public class FoodController : MonoBehaviour
 {
     private Color FedPlantEater = new Color(.1f, 1f, .1f, 1f);
+    public AudioClip EatSound;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,7 @@ public class FoodController : MonoBehaviour
     {
         if (other.CompareTag("plantEater"))
         {
+            AudioSource.PlayClipAtPoint(EatSound, transform.position);
             GameObject.Find("Game").GetComponent<GameMain>().foodPositions.Add(transform.localPosition);
             GameObject.Find("Game").GetComponent<GameMain>().foodList.Remove(transform);
             GameObject.Find("Game").GetComponent<GameMain>().gamePoints += 1;

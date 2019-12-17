@@ -87,6 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aab19c3f1ab9d1a4eadc9bc1cb92fced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EatSound: {fileID: 8300000, guid: ef321a1311ac3a64db4be31cf61e0353, type: 3}
 --- !u!1 &1016945943510247444
 GameObject:
   m_ObjectHideFlags: 0

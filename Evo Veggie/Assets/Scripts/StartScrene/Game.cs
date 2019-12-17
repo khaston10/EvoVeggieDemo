@@ -140,7 +140,7 @@ public class Game : MonoBehaviour
 
     public void ClickLandOwnerAchievement()
     {
-        achievementInformationText.text = "Land Owner: World size is larger than 100";
+        achievementInformationText.text = "Land Owner: World size is larger than 30";
     }
 
     public void ClickGenocideAchievement()

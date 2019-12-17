@@ -10,6 +10,7 @@ public class MeatEaterContoller : MonoBehaviour
     private int direction = 0; // 0: Move y+, 1: Move y-, 2: Move x+, 3: Move x-
     private float timer = 0.0f;
     private Color FedMeatEater = new Color(.55f, .33f, .04f, 1f);
+    public AudioClip EatSound;
 
     // Start is called before the first frame update
     void Start()
@@ -67,6 +68,7 @@ public class MeatEaterContoller : MonoBehaviour
 
         else if (col.gameObject.tag == "plantEater")
         {
+            AudioSource.PlayClipAtPoint(EatSound, transform.position);
             GameObject.Find("Game").GetComponent<GameMain>().plantEaters -= 1;
             GameObject.Find("Game").GetComponent<GameMain>().plantEaterList.Remove(col.transform);
             Destroy(col.transform.gameObject);

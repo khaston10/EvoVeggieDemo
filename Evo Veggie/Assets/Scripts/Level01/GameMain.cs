@@ -49,14 +49,19 @@ public class GameMain : MonoBehaviour
 
     public RawImage landOwnerImage;
     public Texture landOwnerTexture;
+    public bool landOwnerAchievement = false;
     public RawImage ninjaImage;
     public Texture ninjaTexture;
+    public bool ninjaAchievement = false;
     public RawImage survivalistImage;
     public Texture survivalistTexture;
+    public bool survivalistAchievement = false;
     public RawImage glutonImage;
     public Texture glutonTexture;
+    public bool glutonAchievement = false;
     public RawImage unlockedImage;
     public Texture unlockedTexture;
+    public bool unlockedAchievement = false;
     public Slider slayerSlider;
     public Slider freezeSlider;
     public Slider feedSlider;
@@ -67,6 +72,13 @@ public class GameMain : MonoBehaviour
     public Text caffeineSliderText;
     public Text daysUntilMeatEatersText;
     private int daysUntilMeatEaterCounter;
+
+    // Sounds to play depending on state of game.
+    public AudioClip buttonDoesNotWork;
+    public AudioClip upgradeUnlocked;
+    public AudioClip plantEaterDie;
+    public AudioClip meatEaterDie;
+    public AudioClip achievementUnlocked;
 
 
 
@@ -282,6 +294,8 @@ public class GameMain : MonoBehaviour
             {
                 if (plantEaterList[i].GetComponent<PlantEaterContoller>().foodEaten == 0)
                 {
+                    AudioSource.PlayClipAtPoint(plantEaterDie, transform.position);
+
                     Destroy(plantEaterList[i].gameObject);
                     plantEaterList.RemoveAt(i);
                     plantEaters -= 1;
@@ -291,10 +305,12 @@ public class GameMain : MonoBehaviour
                 }
 
                 // Check to see if the Gluton Achievement has been unlocked.
-                else if (plantEaterList[i].GetComponent<PlantEaterContoller>().foodEaten >= 5)
+                else if (plantEaterList[i].GetComponent<PlantEaterContoller>().foodEaten >= 5 && glutonAchievement == false)
                 {
+                    AudioSource.PlayClipAtPoint(achievementUnlocked, transform.position);
                     glutonImage.color = Color.white;
                     glutonImage.texture = glutonTexture;
+                    glutonAchievement = true;
                 }
             }
 
@@ -303,6 +319,7 @@ public class GameMain : MonoBehaviour
             {
                 if (meatEaterList[i].GetComponent<MeatEaterContoller>().daysSinceLastEaten >= daysUntilMeatEaterStarves)
                 {
+                    AudioSource.PlayClipAtPoint(meatEaterDie, transform.position);
                     Destroy(meatEaterList[i].gameObject);
                     meatEaterList.RemoveAt(i);
                 }
@@ -322,17 +339,21 @@ public class GameMain : MonoBehaviour
             }
 
             // Check to see if the Ninja Achievement has been unlocked.
-            if (noPlantEatersKilledForXDays == 10)
+            if (noPlantEatersKilledForXDays == 10 && ninjaAchievement == false)
             {
+                AudioSource.PlayClipAtPoint(achievementUnlocked, transform.position);
                 ninjaImage.color = Color.white;
                 ninjaImage.texture = ninjaTexture;
+                ninjaAchievement = true;
             }
 
             // Check to see if the Survivalist Achievement has been unlocked.
-            if (day == 40)
+            if (day == 40 && survivalistAchievement == false)
             {
+                AudioSource.PlayClipAtPoint(achievementUnlocked, transform.position);
                 survivalistImage.color = Color.white;
                 survivalistImage.texture = survivalistTexture;
+                survivalistAchievement = true;
             }
 
             // Update the daysUntilMeatEater text updated.
@@ -444,7 +465,7 @@ public class GameMain : MonoBehaviour
 
     public void ClickFoodSpawned()
     {
-        if (gamePoints > 0 && foodPositions.Count > 0)
+        if (gamePoints > 0 && foodPositions.Count > 0 && foodSpawned < worldSize * worldSize)
         {
             gamePoints -= 1;
             foodSpawned += 1;
@@ -462,10 +483,12 @@ public class GameMain : MonoBehaviour
         }
 
         // Check to see if the Land Owner achievement is unlocked.
-        if (worldSize >= 20)
+        if (worldSize >= 30 && landOwnerAchievement == false)
         {
+            AudioSource.PlayClipAtPoint(achievementUnlocked, transform.position);
             landOwnerImage.color = Color.white;
             landOwnerImage.texture = landOwnerTexture;
+            landOwnerAchievement = true;
         }
             
 
@@ -484,6 +507,7 @@ public class GameMain : MonoBehaviour
     {
         if (slayerUpgradeUnlocked && slayerSlider.value > 9)
         {
+            AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
             // Kill meat eaters.
             for (int i = 0; i < meatEaterList.Count; i++)
             {
@@ -500,6 +524,7 @@ public class GameMain : MonoBehaviour
 
         else if (slayerUpgradeUnlocked == false && gamePoints >= 30)
         {
+            AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
             // Make the cost text invisible.
             slayerSliderText.text = "";
 
@@ -518,19 +543,24 @@ public class GameMain : MonoBehaviour
             meatEatersSpawnDisabled = true;
 
             // Check to see if all achievements are unlocked.
-            if (caffeineUpgradeUnlocked && feedUpgradeUnlocked && freezeUpgradeUnlocked && slayerUpgradeUnlocked)
+            if (caffeineUpgradeUnlocked && feedUpgradeUnlocked && freezeUpgradeUnlocked && slayerUpgradeUnlocked && unlockedAchievement == false)
             {
                 unlockedImage.color = Color.white;
                 unlockedImage.texture = unlockedTexture;
+                AudioSource.PlayClipAtPoint(achievementUnlocked, transform.position);
+                unlockedAchievement = true;
             }
         }
-        
+
+        else AudioSource.PlayClipAtPoint(buttonDoesNotWork, transform.position);
+
     }
 
     public void ClickFreezeUpgrade()
     {
         if (freezeUpgradeUnlocked && freezeSlider.value > 9)
         {
+            AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
             // Set the freeze bool for meat eaters.
             meatEatersFrozen = true;
 
@@ -540,6 +570,7 @@ public class GameMain : MonoBehaviour
 
         else if (freezeUpgradeUnlocked == false && gamePoints >= 20)
         {
+            AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
             // Make the cost text invisible.
             freezeSliderText.text = "";
 
@@ -551,19 +582,23 @@ public class GameMain : MonoBehaviour
             gamePoints -= 20;
 
             // Check to see if all achievements are unlocked.
-            if (caffeineUpgradeUnlocked && feedUpgradeUnlocked && freezeUpgradeUnlocked && slayerUpgradeUnlocked)
+            if (caffeineUpgradeUnlocked && feedUpgradeUnlocked && freezeUpgradeUnlocked && slayerUpgradeUnlocked && unlockedAchievement == false)
             {
                 unlockedImage.color = Color.white;
                 unlockedImage.texture = unlockedTexture;
+                AudioSource.PlayClipAtPoint(achievementUnlocked, transform.position);
+                unlockedAchievement = true;
             }
-
         }
+
+        else AudioSource.PlayClipAtPoint(buttonDoesNotWork, transform.position);
     }
 
     public void ClickFeedUpgrade()
     {
         if (feedUpgradeUnlocked && feedSlider.value > 9)
         {
+            AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
             // Reset slider.
             feedSlider.value = 0f;
 
@@ -578,6 +613,7 @@ public class GameMain : MonoBehaviour
 
         else if (feedUpgradeUnlocked == false && gamePoints >= 20)
         {
+            AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
             // Make the cost text invisible.
             feedSliderText.text = "";
 
@@ -593,13 +629,16 @@ public class GameMain : MonoBehaviour
             gamePoints -= 20;
 
             // Check to see if all achievements are unlocked.
-            if (caffeineUpgradeUnlocked && feedUpgradeUnlocked && freezeUpgradeUnlocked && slayerUpgradeUnlocked)
+            if (caffeineUpgradeUnlocked && feedUpgradeUnlocked && freezeUpgradeUnlocked && slayerUpgradeUnlocked && unlockedAchievement == false)
             {
                 unlockedImage.color = Color.white;
                 unlockedImage.texture = unlockedTexture;
+                AudioSource.PlayClipAtPoint(achievementUnlocked, transform.position);
+                unlockedAchievement = true;
             }
 
         }
+        else AudioSource.PlayClipAtPoint(buttonDoesNotWork, transform.position);
 
     }
 
@@ -607,6 +646,7 @@ public class GameMain : MonoBehaviour
     {
         if (caffeineUpgradeUnlocked && caffeineSlider.value > 9)
         {
+            AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
             // Reset slider.
             caffeineSlider.value = 0f;
 
@@ -617,6 +657,7 @@ public class GameMain : MonoBehaviour
 
         else if (caffeineUpgradeUnlocked == false && gamePoints >= 20)
         {
+            AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
             // Make the cost text invisible.
             caffeineSliderText.text = "";
 
@@ -628,12 +669,15 @@ public class GameMain : MonoBehaviour
             caffeineSpeedOn = true;
 
             // Check to see if all achievements are unlocked.
-            if (caffeineUpgradeUnlocked && feedUpgradeUnlocked && freezeUpgradeUnlocked && slayerUpgradeUnlocked)
+            if (caffeineUpgradeUnlocked && feedUpgradeUnlocked && freezeUpgradeUnlocked && slayerUpgradeUnlocked && unlockedAchievement == false)
             {
                 unlockedImage.color = Color.white;
                 unlockedImage.texture = unlockedTexture;
+                AudioSource.PlayClipAtPoint(achievementUnlocked, transform.position);
+                unlockedAchievement = true;
             }
 
         }
+        else AudioSource.PlayClipAtPoint(buttonDoesNotWork, transform.position);
     }
 }
