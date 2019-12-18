@@ -4359,7 +4359,7 @@ MonoBehaviour:
   worldSize: 5
   foodSpawned: 5
   plantEaters: 1
-  gamePoints: 200
+  gamePoints: 40
 --- !u!4 &1058897868
 Transform:
   m_ObjectHideFlags: 0

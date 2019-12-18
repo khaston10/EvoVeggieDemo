@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TutGameMain : MonoBehaviour
 {
+
     public int worldSize;
     public int foodSpawned;
     public int plantEaters;
@@ -465,7 +467,7 @@ public class TutGameMain : MonoBehaviour
         }
 
         // Check to see if the Land Owner achievement is unlocked.
-        if (worldSize >= 20)
+        if (worldSize >= 30)
         {
             landOwnerImage.color = Color.white;
             landOwnerImage.texture = landOwnerTexture;
@@ -638,5 +640,10 @@ public class TutGameMain : MonoBehaviour
             }
 
         }
+    }
+
+    public void ClickBack()
+    {
+        SceneManager.LoadScene(sceneName: "StartScreen");
     }
 }

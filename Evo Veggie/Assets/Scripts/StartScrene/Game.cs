@@ -125,7 +125,7 @@ public class Game : MonoBehaviour
 
     public void ClickObjective()
     {
-        achievementInformationText.text = "OBJECTIVE: Help the Plant Eaters survive and see if you can unlock all Upgrades!";
+        achievementInformationText.text = "OBJECTIVE: Help the Plant-Eaters in their struggle for survival. \n\n HINT: Unlocking Achievments is good for the soul!";
     }
 
     public void ClickUpgrade()
@@ -135,12 +135,12 @@ public class Game : MonoBehaviour
 
     public void ClickNinjaAchievement()
     {
-        achievementInformationText.text = "Ninja: No plant eaters killed in a 10 days span";
+        achievementInformationText.text = "Ninja: No Plant-Eaters killed by Meat-Eaters in a 10 days span";
     }
 
     public void ClickLandOwnerAchievement()
     {
-        achievementInformationText.text = "Land Owner: World size is larger than 30";
+        achievementInformationText.text = "Land Owner: World size is 30 or greater.";
     }
 
     public void ClickGenocideAchievement()
@@ -157,6 +157,7 @@ public class Game : MonoBehaviour
     {
         achievementInformationText.text = "Gluton: A PlantEater must eat 5 or more pants in one day.";
     }
+
     public void ClickUnlockedAchievement()
     {
         achievementInformationText.text = "Unlocked: Unlock all upgrades.";

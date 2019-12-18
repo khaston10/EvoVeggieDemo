@@ -5,8 +5,17 @@ using UnityEngine;
 
 public class Tutorial : MonoBehaviour
 {
+    //panels and buttons for tutorial level.
+    public GameObject upgradePanel;
+    public GameObject controlPanel;
+    public GameObject gameSpeedPanel;
+    public GameObject achievementPanel;
+    public GameObject dayCountPanel;
+    public Button backToMenu;
+
+
     public RectTransform tutorialPanel;
-    public RectTransform gameSpeedPanel;
+    //public RectTransform gameSpeedPanel;
     public Text tutorialText;
     private Vector3 panelPos;
     public bool task1 = false; // Press Mouse 2 button.
@@ -16,10 +25,19 @@ public class Tutorial : MonoBehaviour
     public bool task5 = false; // Add 10 plants to the game.
     public bool task6 = false;
     public bool task7 = false;
+    public bool task8 = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        // Set panels and buttons invisible.
+        upgradePanel.SetActive(false);
+        controlPanel.SetActive(false);
+        gameSpeedPanel.SetActive(false);
+        achievementPanel.SetActive(false);
+        dayCountPanel.SetActive(false);
+        backToMenu.gameObject.SetActive(false);
+
         // Set settings in Game Main script to start tutorial.
         GetComponent<TutGameMain>().gamePaused = true;
 
@@ -56,7 +74,7 @@ public class Tutorial : MonoBehaviour
 
         else if(task2 && task3 == false)
         {
-            if (GetComponent<TutGameMain>().plantEaters >= 3)
+            if (GetComponent<TutGameMain>().plantEaters >= 3 && GetComponent<TutGameMain>().creaturesAwake)
             {
                 task3 = true;
                 Task4();
@@ -85,16 +103,26 @@ public class Tutorial : MonoBehaviour
             }
         }
 
+        else if (task7 && task8== false)
+        {
+            if (GetComponent<TutGameMain>().worldSize >= 30)
+            {
+                task7 = true;
+                Task8();
+            }
+        }
+
     }
 
     public void Task2()
     {
-        tutorialPanel.sizeDelta = new Vector2(200, 30);
-        panelPos = gameSpeedPanel.localPosition;
-        panelPos.x = 200f;
+        gameSpeedPanel.SetActive(true);
+        tutorialPanel.sizeDelta = new Vector2(200, 60);
+        panelPos = gameSpeedPanel.transform.localPosition;
+        panelPos.y -= 60f;
         tutorialPanel.localPosition = panelPos;
-        tutorialText.rectTransform.sizeDelta = new Vector2(180, 20);
-        tutorialText.text= "Try pressing the play button.";
+        tutorialText.rectTransform.sizeDelta = new Vector2(180, 55);
+        tutorialText.text= "This is the Speed Panel. \n Try pressing PLAY.";
     }
 
     public void Task3()
@@ -102,14 +130,14 @@ public class Tutorial : MonoBehaviour
         if (task1 == true && task2 == false)
         {
             task2 = true;
-
+            controlPanel.SetActive(true);
             // Place the next set of instructions.
-            tutorialPanel.sizeDelta = new Vector2(300, 150);
+            tutorialPanel.sizeDelta = new Vector2(300, 200);
             panelPos = new Vector2(0f, 0f);
             tutorialPanel.localPosition = panelPos;
-            tutorialText.rectTransform.sizeDelta = new Vector2(280, 130);
-            tutorialText.text = "The inhabitants of Flat World are called Plant-Eaters. \n You can add Plant-Eaters by pressing the ‘Plant Eater’ button. " +
-                " \n \n Let’s add three plant eaters now.";
+            tutorialText.rectTransform.sizeDelta = new Vector2(280, 195);
+            tutorialText.text = "The inhabitants of FlatWorld are called Plant-Eaters. \n\n You can add Plant-Eaters by pressing the ‘Plant Eaters’ " +
+                "button found on the Control Panel \n \n Please add three plant eaters now. \n\n NOTICE: Plant-Eaters can only be added in the day time.";
         }
     }
 
@@ -120,12 +148,12 @@ public class Tutorial : MonoBehaviour
             task4 = true;
 
             // Place the next set of instructions.
-            tutorialPanel.sizeDelta = new Vector2(500, 150);
+            tutorialPanel.sizeDelta = new Vector2(450, 140);
             panelPos = new Vector2(0f, -200f);
             tutorialPanel.localPosition = panelPos;
-            tutorialText.rectTransform.sizeDelta = new Vector2(380, 130);
-            tutorialText.text = "During the day Plant-Eaters move randomly in search of food. \n At night they stop moving to sleep. \n \n Warning: Plant-Eaters need plants to live." +
-                "If a Plant-Eater does not eat, they will die. \n \n Wait for these Plant-Eaters to die.";
+            tutorialText.rectTransform.sizeDelta = new Vector2(435, 135);
+            tutorialText.text = "During the day Plant-Eaters move randomly in search of food. \n\n At night they stop moving to sleep. \n \n " +
+                "Warning: Plant-Eaters need to eat everyday to survive. \n \n Wait for these Plant-Eaters to die.";
         }
     }
 
@@ -133,11 +161,11 @@ public class Tutorial : MonoBehaviour
     {
 
         // Place the next set of instructions.
-        tutorialPanel.sizeDelta = new Vector2(300, 150);
+        tutorialPanel.sizeDelta = new Vector2(300, 60);
         panelPos = new Vector2(0f, 0f);
         tutorialPanel.localPosition = panelPos;
-        tutorialText.rectTransform.sizeDelta = new Vector2(280, 130);
-        tutorialText.text = "Plant-Eaters need plants to survive. Try adding 10 plants to FlatWorld now. \n \n NOTICE: Plants only grow at sunrise.";
+        tutorialText.rectTransform.sizeDelta = new Vector2(280, 55);
+        tutorialText.text = "Try adding 10 plants to FlatWorld now. \n \n NOTICE: Plants only grow at sunrise.";
 
     }
 
@@ -146,24 +174,40 @@ public class Tutorial : MonoBehaviour
         task6 = true;
 
         // Place the next set of instructions.
-        tutorialPanel.sizeDelta = new Vector2(300, 90);
+        tutorialPanel.sizeDelta = new Vector2(400, 150);
         panelPos = new Vector2(0f, 0f);
         tutorialPanel.localPosition = panelPos;
-        tutorialText.rectTransform.sizeDelta = new Vector2(280, 85);
-        tutorialText.text = "FlatWorld is feeling a little cramped now. \n Try increasing the world size.";
+        tutorialText.rectTransform.sizeDelta = new Vector2(395, 145);
+        tutorialText.text = "Available game points can be seen on the Control Panel. \n\n Making changes to FlatWorld costs game points. \n\n " +
+            "FlatWorld is feeling a little cramped now. \n\n Let's increase the world size.";
 
     }
 
     public void Task7()
     {
+        achievementPanel.SetActive(true);
+        dayCountPanel.SetActive(true);
         // Place the next set of instructions.
-        tutorialPanel.sizeDelta = new Vector2(300, 300);
+        tutorialPanel.sizeDelta = new Vector2(350, 120);
+        panelPos = new Vector2(0f, -100f);
+        tutorialPanel.localPosition = panelPos;
+        tutorialText.rectTransform.sizeDelta = new Vector2(345, 115);
+        tutorialText.text = "The Achievment and Day Count Panel can be seen at the bottom of the screen. \n\n Increase the world size to 30 to unlock an achievment.";
+    }
+
+    public void Task8()
+    {
+        upgradePanel.SetActive(true);
+        backToMenu.gameObject.SetActive(true);
+        
+        
+        // Place the next set of instructions.
+        tutorialPanel.sizeDelta = new Vector2(350, 180);
         panelPos = new Vector2(0f, 0f);
         tutorialPanel.localPosition = panelPos;
-        tutorialText.rectTransform.sizeDelta = new Vector2(280, 280);
-        tutorialText.text = "Now that you know the basics, help the Plant-Eaters to survive. \n \n But be careful, if all the Plant-Eaters die, the game is over!" +
-            "\n \n During the struggle for survival you will encounter an alien race that likes to snack on Plant-Eaters. Use the Upgrade Panel to survive. \n \n" +
-            "To complete the game earn all of the Achievements!";
+        tutorialText.rectTransform.sizeDelta = new Vector2(345, 175);
+        tutorialText.text = "Now that you know the basics, will you help the Plant-Eaters to survive? \n \n Be careful in your quest; the game is over if all the Plant-Eaters die!" +
+            "\n \n Use the Upgrade Panel to increase your chances of survival.";
 
     }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameMain : MonoBehaviour
@@ -9,6 +10,7 @@ public class GameMain : MonoBehaviour
     public int foodSpawned;
     public int plantEaters;
     public int meatEaters;
+    public int meatEaterSpawnAmount = 2;
     public int gamePoints;
     public int daysBetweenMeatEaterSpawn;
     public int daysUntilMeatEaterStarves;
@@ -25,7 +27,7 @@ public class GameMain : MonoBehaviour
     public float plantEaterSpeed = .5f; // Set to .5 in normal speed and 2 for Fast Forward mode.
     public float caffeinePlantEaterSpeed = 1.5f; // Set to 1.5 in normal speed and 6 for Fast Forward mode.
     public float meatEaterSpeed = .5f; // Set to .5 in normal speed and 2 for Fast Forward mode.
-    public float slowSpeedMeter = .001f; // Set to .001 in normal speed and .004 for Fast Forward mode.
+    public float slowSpeedMeter = .0005f; // Set to .0005 in normal speed and .002 for Fast Forward mode.
     public float medSpeedMeter = .01f; // Set to .01 in normal speed and .04 for Fast Forward mode.
     public Light star1;
     public Text GameSpeedDisplayText;
@@ -50,6 +52,9 @@ public class GameMain : MonoBehaviour
     public RawImage landOwnerImage;
     public Texture landOwnerTexture;
     public bool landOwnerAchievement = false;
+    public RawImage genocideImage;
+    public Texture genocideTexture;
+    public bool genocideAchievement = false;
     public RawImage ninjaImage;
     public Texture ninjaTexture;
     public bool ninjaAchievement = false;
@@ -193,21 +198,33 @@ public class GameMain : MonoBehaviour
         }
 
         // Restock meat eaters at the beginning of the day if is time, then reset the counter.
-        if (meaterEaterSpawnCounter == daysBetweenMeatEaterSpawn && meatEaterList.Count < meatEaters && meatEatersSpawnDisabled == false)
+        if (meaterEaterSpawnCounter == daysBetweenMeatEaterSpawn && meatEatersSpawnDisabled == false)
         {
-            // Pick a random position.
-            int randPos = Random.Range(0, plantEaterStartPositions.Count);
+            for (int i = 0; i < meatEaterSpawnAmount; i++)
+            {
+                // Pick a random position.
+                int randPos = Random.Range(0, plantEaterStartPositions.Count);
 
-            // Place meat eater at position, then place the transform in the meatEaterList. 
-            Transform m = Instantiate(meatEater);
-            m.localPosition = plantEaterStartPositions[randPos];
-            meatEaterList.Add(m);
+                // Place meat eater at position, then place the transform in the meatEaterList. 
+                Transform m = Instantiate(meatEater);
+                m.localPosition = plantEaterStartPositions[randPos];
+                meatEaterList.Add(m);
+
+                meatEaters += 1;
+
+            }
+            meatEatersSpawnDisabled = true;
+            meatEaterSpawnAmount += 1;
         }
 
-        else if (meaterEaterSpawnCounter > daysBetweenMeatEaterSpawn) meaterEaterSpawnCounter = 0;
+        else if (meaterEaterSpawnCounter > daysBetweenMeatEaterSpawn)
+        {
+            meaterEaterSpawnCounter = 0;
+            meatEatersSpawnDisabled = false;
+        }
 
-        //------------------------------------This code is used for debugging, remove before release.--------------------
-        if (plantEatersOn == false)
+            //------------------------------------This code is used for debugging, remove before release.--------------------
+            if (plantEatersOn == false)
         {
             for (int i = 0; i < plantEaterList.Count; i++)
             {
@@ -268,10 +285,12 @@ public class GameMain : MonoBehaviour
         xPos = worldSize * Mathf.Cos(timerSpeedCoefficient * timer) + worldSize / 2;
         star1.transform.position = new Vector3(xPos, yPos, worldSize / 2);
 
-
         // Take care of end of day tasks.
         if (timer >= lengthOfDay)
         {
+            // Check to see if the game is over.
+            if (plantEaters == 0) SceneManager.LoadScene(sceneName: "EndScreen");
+
             // Restock food at the beginning of each day.
             int currentFoodAmount = foodList.Count;
             for (int i = currentFoodAmount; i < foodSpawned; i++ )
@@ -299,9 +318,6 @@ public class GameMain : MonoBehaviour
                     Destroy(plantEaterList[i].gameObject);
                     plantEaterList.RemoveAt(i);
                     plantEaters -= 1;
-
-                    // Reset the plantEatersKilledStat used for achievements.
-                    if (noPlantEatersKilledForXDays != 0) noPlantEatersKilledForXDays = 0;
                 }
 
                 // Check to see if the Gluton Achievement has been unlocked.
@@ -322,6 +338,7 @@ public class GameMain : MonoBehaviour
                     AudioSource.PlayClipAtPoint(meatEaterDie, transform.position);
                     Destroy(meatEaterList[i].gameObject);
                     meatEaterList.RemoveAt(i);
+                    meatEaters -= 1;
                 }
 
             }
@@ -433,7 +450,7 @@ public class GameMain : MonoBehaviour
         plantEaterSpeed = .5f;
         caffeinePlantEaterSpeed = 1.5f;
         meatEaterSpeed = .5f;
-        slowSpeedMeter = .001f;
+        slowSpeedMeter = .0005f;
         medSpeedMeter = .01f;
     }
 
@@ -458,7 +475,7 @@ public class GameMain : MonoBehaviour
         plantEaterSpeed = 2f;
         caffeinePlantEaterSpeed = 6f;
         meatEaterSpeed = 2f;
-        slowSpeedMeter = .004f;
+        slowSpeedMeter = .002f;
         medSpeedMeter = .04f;
 
     }
@@ -508,6 +525,16 @@ public class GameMain : MonoBehaviour
         if (slayerUpgradeUnlocked && slayerSlider.value > 9)
         {
             AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
+
+            // Check to see if genocide achievement is unlocked.
+            if (meatEaterList.Count >= 5)
+            {
+                AudioSource.PlayClipAtPoint(achievementUnlocked, transform.position);
+                genocideImage.color = Color.white;
+                genocideImage.texture = genocideTexture;
+                genocideAchievement = true;
+            }
+
             // Kill meat eaters.
             for (int i = 0; i < meatEaterList.Count; i++)
             {
@@ -520,6 +547,9 @@ public class GameMain : MonoBehaviour
 
             // Set the bool to false so that meat eaters do not come back immediately.
             meatEatersSpawnDisabled = true;
+
+            
+
         }
 
         else if (slayerUpgradeUnlocked == false && gamePoints >= 30)
@@ -527,6 +557,15 @@ public class GameMain : MonoBehaviour
             AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
             // Make the cost text invisible.
             slayerSliderText.text = "";
+
+            // Check to see if genocide achievement is unlocked.
+            if (meatEaterList.Count >= 5)
+            {
+                AudioSource.PlayClipAtPoint(achievementUnlocked, transform.position);
+                genocideImage.color = Color.white;
+                genocideImage.texture = genocideTexture;
+                genocideAchievement = true;
+            }
 
             // Kill meat eaters.
             for (int i = 0; i < meatEaterList.Count; i++)

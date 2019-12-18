@@ -66,7 +66,7 @@ public class MeatEaterContoller : MonoBehaviour
             Physics.IgnoreCollision(col.collider, GetComponent<Collider>());
         }
 
-        else if (col.gameObject.tag == "plantEater")
+        else if (col.gameObject.tag == "plantEater" && GameObject.Find("Game").GetComponent<GameMain>().meatEatersFrozen == false)
         {
             AudioSource.PlayClipAtPoint(EatSound, transform.position);
             GameObject.Find("Game").GetComponent<GameMain>().plantEaters -= 1;
@@ -76,6 +76,9 @@ public class MeatEaterContoller : MonoBehaviour
             transform.GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = FedMeatEater;
             transform.GetChild(0).GetChild(2).GetComponent<Renderer>().material.color = FedMeatEater;
             transform.GetChild(0).GetChild(3).GetComponent<Renderer>().material.color = FedMeatEater;
+
+            //Reset the stat used for the ninja achievement.
+            GameObject.Find("Game").GetComponent<GameMain>().noPlantEatersKilledForXDays = 0;
         }
     }
 }

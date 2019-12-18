@@ -1543,7 +1543,8 @@ MonoBehaviour:
   worldSize: 0
   foodSpawned: 0
   plantEaters: 0
-  meatEaters: 2
+  meatEaters: 0
+  meatEaterSpawnAmount: 2
   gamePoints: 0
   daysBetweenMeatEaterSpawn: 4
   daysUntilMeatEaterStarves: 2
@@ -1585,6 +1586,9 @@ MonoBehaviour:
   landOwnerImage: {fileID: 554674041}
   landOwnerTexture: {fileID: 2800000, guid: 48f57060d791b24439998fe8b9dc9374, type: 3}
   landOwnerAchievement: 0
+  genocideImage: {fileID: 251596285}
+  genocideTexture: {fileID: 2800000, guid: 87d668a3b1c3a7a4fbe60abd969ad005, type: 3}
+  genocideAchievement: 0
   ninjaImage: {fileID: 121002157}
   ninjaTexture: {fileID: 2800000, guid: 4f49d70235cb53b49967f5c89c35a200, type: 3}
   ninjaAchievement: 0
@@ -1793,7 +1797,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 932743088}
+      - m_Target: {fileID: 1626647452}
         m_MethodName: Play
         m_Mode: 1
         m_Arguments:
@@ -7066,7 +7070,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1626647452}
+      - m_Target: {fileID: 932743088}
         m_MethodName: Play
         m_Mode: 1
         m_Arguments:
