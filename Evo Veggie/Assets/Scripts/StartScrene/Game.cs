@@ -100,7 +100,7 @@ public class Game : MonoBehaviour
     // Deals with the food spawned buttons.
     public void ClickFoodPlus()
     {
-        if (gamePoints > 0)
+        if (gamePoints > 0 && foodSpawned < worldSize * worldSize)
         {
             foodSpawned += 1;
             gamePoints -= 1;

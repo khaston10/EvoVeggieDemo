@@ -67,14 +67,12 @@ public class PlantEaterContoller : MonoBehaviour
 
     private void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.tag == "Food")
-        {
-            //GameObject.Find("Game").GetComponent<GameMain>().gamePoints += 1;
-        }
-
-        else if (col.gameObject.tag == "plantEater")
+       
+        if (col.gameObject.tag == "plantEater")
         {
             Physics.IgnoreCollision(col.collider, GetComponent<Collider>());
         }
+
+
     }
 }
