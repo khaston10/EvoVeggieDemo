@@ -51,22 +51,22 @@ public class GameMain : MonoBehaviour
 
     public RawImage landOwnerImage;
     public Texture landOwnerTexture;
-    public bool landOwnerAchievement = false;
+    public bool landOwnerAchievement;
     public RawImage genocideImage;
     public Texture genocideTexture;
-    public bool genocideAchievement = false;
+    public bool genocideAchievement;
     public RawImage ninjaImage;
     public Texture ninjaTexture;
-    public bool ninjaAchievement = false;
+    public bool ninjaAchievement;
     public RawImage survivalistImage;
     public Texture survivalistTexture;
-    public bool survivalistAchievement = false;
+    public bool survivalistAchievement;
     public RawImage glutonImage;
     public Texture glutonTexture;
-    public bool glutonAchievement = false;
+    public bool glutonAchievement;
     public RawImage unlockedImage;
     public Texture unlockedTexture;
-    public bool unlockedAchievement = false;
+    public bool unlockedAchievement;
     public Slider slayerSlider;
     public Slider freezeSlider;
     public Slider feedSlider;
@@ -95,7 +95,7 @@ public class GameMain : MonoBehaviour
     public bool plantEatersOn = true;
     public bool meathEatersOn = true;
 
-    private int day = 1;
+    public int day;
     private float timer = 0.0f;
     private float plantEaterTimer = 0.0f;
     private float lengthOfDay = 25.12f;
@@ -121,6 +121,13 @@ public class GameMain : MonoBehaviour
         foodSpawned = GlobalControl.Instance.foodSpawned;
         plantEaters = GlobalControl.Instance.plantEaters;
         gamePoints = GlobalControl.Instance.gamePoints;
+        day = GlobalControl.Instance.day;
+        landOwnerAchievement = GlobalControl.Instance.landOwnerAchievement;
+        genocideAchievement = GlobalControl.Instance.genocideAchievement;
+        ninjaAchievement = GlobalControl.Instance.ninjaAchievement;
+        survivalistAchievement = GlobalControl.Instance.survivalistAchievement;
+        glutonAchievement = GlobalControl.Instance.glutonAchievement;
+        unlockedAchievement = GlobalControl.Instance.unlockedAchievement;
 
         // Set sliders as invisible
         slayerSlider.gameObject.SetActive(false);
@@ -289,8 +296,11 @@ public class GameMain : MonoBehaviour
         if (timer >= lengthOfDay)
         {
             // Check to see if the game is over.
-            if (plantEaters == 0) SceneManager.LoadScene(sceneName: "EndScreen");
-
+            if (plantEaters == 0)
+            {
+                SaveData();
+                SceneManager.LoadScene(sceneName: "EndScreen");
+            }
             // Restock food at the beginning of each day.
             int currentFoodAmount = foodList.Count;
             for (int i = currentFoodAmount; i < foodSpawned; i++ )
@@ -417,6 +427,13 @@ public class GameMain : MonoBehaviour
         GlobalControl.Instance.foodSpawned = foodSpawned;
         GlobalControl.Instance.plantEaters = plantEaters;
         GlobalControl.Instance.gamePoints = gamePoints;
+        GlobalControl.Instance.day = day;
+        GlobalControl.Instance.landOwnerAchievement = landOwnerAchievement;
+        GlobalControl.Instance.ninjaAchievement = ninjaAchievement;
+        GlobalControl.Instance.genocideAchievement = genocideAchievement;
+        GlobalControl.Instance.glutonAchievement = glutonAchievement;
+        GlobalControl.Instance.unlockedAchievement = unlockedAchievement;
+        GlobalControl.Instance.survivalistAchievement = survivalistAchievement;
     }
 
     // This section handles buttons on screen.

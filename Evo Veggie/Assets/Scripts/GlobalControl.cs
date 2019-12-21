@@ -10,6 +10,13 @@ public class GlobalControl : MonoBehaviour
     public int foodSpawned;
     public int plantEaters;
     public int gamePoints;
+    public bool landOwnerAchievement;
+    public bool genocideAchievement;
+    public bool ninjaAchievement;
+    public bool survivalistAchievement;
+    public bool glutonAchievement;
+    public bool unlockedAchievement;
+    public int day;
 
     private void Awake()
     {

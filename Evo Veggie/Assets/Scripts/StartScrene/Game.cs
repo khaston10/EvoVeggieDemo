@@ -10,6 +10,7 @@ public class Game : MonoBehaviour
     public int foodSpawned;
     public int plantEaters;
     public int gamePoints;
+    public int day;
 
     private int minWorldSize = 5;
     private int minFoodSpawned = 5;
@@ -21,6 +22,13 @@ public class Game : MonoBehaviour
     public Text gamePointsText;
     public Text achievementInformationText;
 
+    public bool landOwnerAchievement;
+    public bool genocideAchievement;
+    public bool ninjaAchievement;
+    public bool survivalistAchievement;
+    public bool glutonAchievement;
+    public bool unlockedAchievement;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +36,13 @@ public class Game : MonoBehaviour
         foodSpawned = GlobalControl.Instance.foodSpawned;
         plantEaters = GlobalControl.Instance.plantEaters;
         gamePoints = GlobalControl.Instance.gamePoints;
+        day = GlobalControl.Instance.day;
+        landOwnerAchievement = GlobalControl.Instance.landOwnerAchievement;
+        genocideAchievement = GlobalControl.Instance.genocideAchievement;
+        ninjaAchievement = GlobalControl.Instance.ninjaAchievement;
+        survivalistAchievement = GlobalControl.Instance.survivalistAchievement;
+        glutonAchievement = GlobalControl.Instance.glutonAchievement;
+        unlockedAchievement = GlobalControl.Instance.unlockedAchievement;
 
     }
 
@@ -47,6 +62,13 @@ public class Game : MonoBehaviour
         GlobalControl.Instance.foodSpawned = foodSpawned;
         GlobalControl.Instance.plantEaters = plantEaters;
         GlobalControl.Instance.gamePoints = gamePoints;
+        GlobalControl.Instance.day = day;
+        GlobalControl.Instance.landOwnerAchievement = landOwnerAchievement;
+        GlobalControl.Instance.ninjaAchievement = ninjaAchievement;
+        GlobalControl.Instance.genocideAchievement = genocideAchievement;
+        GlobalControl.Instance.glutonAchievement = glutonAchievement;
+        GlobalControl.Instance.unlockedAchievement = unlockedAchievement;
+        GlobalControl.Instance.survivalistAchievement = survivalistAchievement;
     }
 
     // Deals with the Start Button.

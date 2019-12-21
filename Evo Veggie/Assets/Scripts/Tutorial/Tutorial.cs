@@ -112,6 +112,13 @@ public class Tutorial : MonoBehaviour
             }
         }
 
+        else if (task8)
+        {
+            if(Input.GetKeyDown(KeyCode.Escape)){
+                Task9();
+            }
+        }
+
     }
 
     public void Task2()
@@ -196,6 +203,18 @@ public class Tutorial : MonoBehaviour
     }
 
     public void Task8()
+    {
+        achievementPanel.SetActive(true);
+        dayCountPanel.SetActive(true);
+        // Place the next set of instructions.
+        tutorialPanel.sizeDelta = new Vector2(350, 120);
+        panelPos = new Vector2(0f, -100f);
+        tutorialPanel.localPosition = panelPos;
+        tutorialText.rectTransform.sizeDelta = new Vector2(345, 115);
+        tutorialText.text = "You can press the ESC key at anytime to adjust the settings!";
+    }
+
+    public void Task9()
     {
         upgradePanel.SetActive(true);
         backToMenu.gameObject.SetActive(true);
