@@ -24,7 +24,6 @@ public class FoodController : MonoBehaviour
         // Check to see if the PlantGrow animation is playing. If it is not, then the tigger should be active.
         if (Anim.GetCurrentAnimatorStateInfo(0).IsName("PlantIdle") && colliderActive == false)
         {
-            Debug.Log("Trigger turned true");
             colliderActive = true;
 
         }
