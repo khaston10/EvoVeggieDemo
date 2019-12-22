@@ -78,6 +78,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBetweenDirectionChange: 1
   daysSinceLastEaten: 0
+  relativePos: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 0}
+  visionDistance: 0
   EatSound: {fileID: 8300000, guid: ef5eb56baf641ba44a93d9ccce8e3105, type: 3}
 --- !u!82 &2705397940557518639
 AudioSource:
@@ -210,7 +213,7 @@ PrefabInstance:
     - target: {fileID: 7598774153200099430, guid: e504b897f1a9f8441b3282d4b2ee313d,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 7598774153200099430, guid: e504b897f1a9f8441b3282d4b2ee313d,
         type: 3}
@@ -220,7 +223,7 @@ PrefabInstance:
     - target: {fileID: 7598774153200099430, guid: e504b897f1a9f8441b3282d4b2ee313d,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 7598774153200099430, guid: e504b897f1a9f8441b3282d4b2ee313d,
         type: 3}
@@ -235,7 +238,7 @@ PrefabInstance:
     - target: {fileID: 7598774153200099430, guid: e504b897f1a9f8441b3282d4b2ee313d,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 7598774153200099430, guid: e504b897f1a9f8441b3282d4b2ee313d,
         type: 3}

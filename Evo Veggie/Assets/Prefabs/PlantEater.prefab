@@ -49,7 +49,9 @@ MonoBehaviour:
   timeBetweenDirectionChange: 1
   foodEaten: 1
   isStarving: 0
-  visionDistance: 2
+  relativePos: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 0}
+  visionDistance: 0
 --- !u!65 &4547489209484406156
 BoxCollider:
   m_ObjectHideFlags: 0

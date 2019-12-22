@@ -9,7 +9,8 @@ public class PlantEaterContoller : MonoBehaviour
     public bool isStarving = false;
     public Vector3 relativePos;
     public Quaternion rotation;
-    public int visionDistance = 5;
+    public int visionDistance;
+
     private int direction = 0; // 0: Move y+, 1: Move y-, 2: Move x+, 3: Move x-
     private float timer = 0.0f;
     
@@ -22,6 +23,7 @@ public class PlantEaterContoller : MonoBehaviour
         // Initialize variables.
         relativePos = new Vector3(0f, 0f, 0f);
         rotation = new Quaternion(0f, 0f, 0f, 0f);
+        visionDistance = 5;
    
     }
 
@@ -60,8 +62,6 @@ public class PlantEaterContoller : MonoBehaviour
                 relativePos = GameObject.Find("Game").GetComponent<GameMain>().foodList[i].position - transform.position;
                 relativePos.y = 0f;
                 direction = 4;
-
-               
             }
 
         }

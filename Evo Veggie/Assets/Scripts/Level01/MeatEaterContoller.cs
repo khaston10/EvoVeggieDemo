@@ -6,6 +6,9 @@ public class MeatEaterContoller : MonoBehaviour
 {
     public int timeBetweenDirectionChange = 1;
     public int daysSinceLastEaten = 0;
+    public Vector3 relativePos;
+    public Quaternion rotation;
+    public int visionDistance;
 
     private int direction = 0; // 0: Move y+, 1: Move y-, 2: Move x+, 3: Move x-
     private float timer = 0.0f;
@@ -15,7 +18,10 @@ public class MeatEaterContoller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        // Initialize variables.
+        relativePos = new Vector3(0f, 0f, 0f);
+        rotation = new Quaternion(0f, 0f, 0f, 0f);
+        visionDistance = 5;
     }
 
     // Update is called once per frame
@@ -44,19 +50,58 @@ public class MeatEaterContoller : MonoBehaviour
     }
     public void MeatEaterChangeDirection()
     {
-        direction = Random.Range(0, 4);
+        // Check to see if food is in eye sight.
+        if(GameObject.Find("Game").GetComponent<GameMain>().plantEaterList.Count > 0)
+        {
+            for (int i = 0; i < GameObject.Find("Game").GetComponent<GameMain>().plantEaterList.Count; i++)
+            {
+                if (Vector3.Distance(transform.position, GameObject.Find("Game").GetComponent<GameMain>().plantEaterList[i].position) <= visionDistance)
+                {
+                    // Save the plant eater position.
+                    relativePos = GameObject.Find("Game").GetComponent<GameMain>().plantEaterList[i].position - transform.position;
+                    relativePos.y = 0f;
+                    direction = 4;
+                    //Debug.Log(Vector3.Distance(transform.position, GameObject.Find("Game").GetComponent<GameMain>().foodList[i].position));
+                }
+            }
+        }
+        
 
-        if (direction == 0) transform.localRotation = Quaternion.Euler(0, 90, 0);
-        else if (direction == 1) transform.localRotation = Quaternion.Euler(0, -90, 0);
-        else if (direction == 2) transform.localRotation = Quaternion.Euler(0, 180, 0);
-        else if (direction == 3) transform.localRotation = Quaternion.Euler(0, 0, 0);
+        // Pick random direction if it has not already been picked.
+        if (direction != 4)
+        {
+            relativePos = transform.position;
+            relativePos.y = 0f;
+
+            direction = Random.Range(0, 4);
+
+            if (direction == 0) relativePos.x += 10;
+            else if (direction == 1) relativePos.x -= 10;
+            else if (direction == 2) relativePos.z += 10;
+            else if (direction == 3) relativePos.z -= 10;
+        }
+
+        // Rotate the plant eater.
+        // the second argument, upwards, defaults to Vector3.up
+        rotation = Quaternion.LookRotation(relativePos, Vector3.up);
+        transform.rotation = rotation;
+
+        // Reset the direction variable. This will help in the case that the plant eater eats the last plant.
+        direction = 0;
+
+        //direction = Random.Range(0, 4);
+
+        //if (direction == 0) transform.localRotation = Quaternion.Euler(0, 90, 0);
+        //else if (direction == 1) transform.localRotation = Quaternion.Euler(0, -90, 0);
+        //else if (direction == 2) transform.localRotation = Quaternion.Euler(0, 180, 0);
+        //else if (direction == 3) transform.localRotation = Quaternion.Euler(0, 0, 0);
 
 
     }
 
     public void MeatEaterMove()
     {
-        transform.Translate(-Vector3.right * GameObject.Find("Game").GetComponent<GameMain>().meatEaterSpeed * Time.deltaTime);
+        transform.Translate(Vector3.forward * GameObject.Find("Game").GetComponent<GameMain>().meatEaterSpeed * Time.deltaTime);
     }
 
     private void OnCollisionEnter(Collision col)
