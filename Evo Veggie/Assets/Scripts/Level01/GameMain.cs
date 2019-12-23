@@ -85,6 +85,12 @@ public class GameMain : MonoBehaviour
     public AudioClip meatEaterDie;
     public AudioClip achievementUnlocked;
 
+    // Buttons for upgrade.
+    public Button slayerButton;
+    public Button freezeButton;
+    public Button feedButton;
+    public Button caffeineButton;
+
 
 
 
@@ -249,10 +255,56 @@ public class GameMain : MonoBehaviour
         foodSpawnedText.text = foodSpawned.ToString();
         PlantEatersText.text = plantEaters.ToString();
         dayCountText.text = day.ToString();
-        if (slayerUpgradeUnlocked && slayerSlider.value < 10) slayerSlider.value += slowSpeedMeter;
-        if (freezeUpgradeUnlocked && freezeSlider.value < 10) freezeSlider.value += slowSpeedMeter;
-        if (feedUpgradeUnlocked && feedSlider.value < 10) feedSlider.value += slowSpeedMeter;
-        if (caffeineUpgradeUnlocked && caffeineSlider.value < 10) caffeineSlider.value += slowSpeedMeter;
+
+        // Update sliders and turn off if they are full.
+        if (slayerUpgradeUnlocked)
+        {
+            if (slayerSlider.value < 10) slayerSlider.value += slowSpeedMeter;
+            else if (slayerSlider.isActiveAndEnabled)
+            {
+                AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
+                slayerSlider.gameObject.SetActive(false);
+
+                ChangeButtonColor(slayerButton, Color.green);
+            }
+        }
+
+        if (freezeUpgradeUnlocked)
+        {
+            if (freezeSlider.value < 10) freezeSlider.value += slowSpeedMeter;
+            else if (freezeSlider.isActiveAndEnabled)
+            {
+                AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
+                freezeSlider.gameObject.SetActive(false);
+
+                ChangeButtonColor(freezeButton, Color.green);
+            }
+        }
+
+        if (feedUpgradeUnlocked)
+        {
+            if (feedSlider.value < 10) feedSlider.value += slowSpeedMeter;
+            else if (feedSlider.isActiveAndEnabled)
+            {
+                AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
+                feedSlider.gameObject.SetActive(false);
+
+                ChangeButtonColor(feedButton, Color.green);
+            }
+        }
+
+        if (caffeineUpgradeUnlocked)
+        {
+            if (caffeineSlider.value < 10) caffeineSlider.value += slowSpeedMeter;
+            else if (caffeineSlider.isActiveAndEnabled)
+            {
+                AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
+                caffeineSlider.gameObject.SetActive(false);
+
+                ChangeButtonColor(caffeineButton, Color.green);
+            }
+        }
+
 
 
 
@@ -541,6 +593,11 @@ public class GameMain : MonoBehaviour
     {
         if (slayerUpgradeUnlocked && slayerSlider.value > 9)
         {
+            ChangeButtonColor(slayerButton, Color.red);
+
+            // Set the slider back to visible.
+            slayerSlider.gameObject.SetActive(true);
+
             AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
 
             // Check to see if genocide achievement is unlocked.
@@ -571,6 +628,8 @@ public class GameMain : MonoBehaviour
 
         else if (slayerUpgradeUnlocked == false && gamePoints >= 30)
         {
+            ChangeButtonColor(slayerButton, Color.red);
+
             AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
             // Make the cost text invisible.
             slayerSliderText.text = "";
@@ -616,6 +675,11 @@ public class GameMain : MonoBehaviour
     {
         if (freezeUpgradeUnlocked && freezeSlider.value > 9)
         {
+            ChangeButtonColor(freezeButton, Color.red);
+
+            // Set the slider back to visible.
+            freezeSlider.gameObject.SetActive(true);
+
             AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
             // Set the freeze bool for meat eaters.
             meatEatersFrozen = true;
@@ -626,6 +690,8 @@ public class GameMain : MonoBehaviour
 
         else if (freezeUpgradeUnlocked == false && gamePoints >= 20)
         {
+            ChangeButtonColor(freezeButton, Color.red);
+
             AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
             // Make the cost text invisible.
             freezeSliderText.text = "";
@@ -654,6 +720,11 @@ public class GameMain : MonoBehaviour
     {
         if (feedUpgradeUnlocked && feedSlider.value > 9)
         {
+            ChangeButtonColor(feedButton, Color.red);
+
+            // Set the slider back to visible.
+            feedSlider.gameObject.SetActive(true);
+
             AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
             // Reset slider.
             feedSlider.value = 0f;
@@ -669,6 +740,8 @@ public class GameMain : MonoBehaviour
 
         else if (feedUpgradeUnlocked == false && gamePoints >= 20)
         {
+            ChangeButtonColor(feedButton, Color.red);
+
             AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
             // Make the cost text invisible.
             feedSliderText.text = "";
@@ -702,6 +775,12 @@ public class GameMain : MonoBehaviour
     {
         if (caffeineUpgradeUnlocked && caffeineSlider.value > 9)
         {
+
+            ChangeButtonColor(caffeineButton, Color.red);
+
+            // Set the slider back to visible.
+            caffeineSlider.gameObject.SetActive(true);
+
             AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
             // Reset slider.
             caffeineSlider.value = 0f;
@@ -711,8 +790,10 @@ public class GameMain : MonoBehaviour
 
         }
 
-        else if (caffeineUpgradeUnlocked == false && gamePoints >= 20)
+        else if (caffeineUpgradeUnlocked == false && gamePoints >= 10)
         {
+            ChangeButtonColor(caffeineButton, Color.red);
+
             AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
             // Make the cost text invisible.
             caffeineSliderText.text = "";
@@ -735,5 +816,10 @@ public class GameMain : MonoBehaviour
 
         }
         else AudioSource.PlayClipAtPoint(buttonDoesNotWork, transform.position);
+    }
+
+    public void ChangeButtonColor(Button but, Color color)
+    {
+        but.GetComponent<Image>().color = color;
     }
 }

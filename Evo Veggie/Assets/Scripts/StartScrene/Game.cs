@@ -207,6 +207,8 @@ public class Game : MonoBehaviour
 
     public void ClickTutorial()
     {
+        gamePoints = 100;
+        SaveData();
         SceneManager.LoadScene(sceneName: "Tutorial");
     }
 }
