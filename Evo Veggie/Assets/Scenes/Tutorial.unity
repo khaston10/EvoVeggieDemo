@@ -1678,7 +1678,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 579968903}
+      - m_Target: {fileID: 0}
         m_MethodName: SetVolume
         m_Mode: 0
         m_Arguments:
@@ -2997,7 +2997,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 579968903}
+      - m_Target: {fileID: 0}
         m_MethodName: SetResolution
         m_Mode: 0
         m_Arguments:
@@ -4889,7 +4889,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 579968898}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92b0f855745b28942acff81483a78a7d, type: 3}
+  m_Script: {fileID: 11500000, guid: ffeb6f0028b19284999b18da28cb8b41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mixer: {fileID: 24100000, guid: 91456348ff9d11f4095d4d19c20d6b0a, type: 2}
@@ -8681,7 +8681,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 579968903}
+      - m_Target: {fileID: 0}
         m_MethodName: SetQuality
         m_Mode: 0
         m_Arguments:
@@ -9146,7 +9146,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 579968903}
+      - m_Target: {fileID: 0}
         m_MethodName: SetFullScreen
         m_Mode: 0
         m_Arguments:
@@ -9478,7 +9478,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "This is FlatWorld. \n\nTry rotating the camera by holding the middle mouse
+  m_Text: "This is Flatopia. \n\nTry rotating the camera by holding the middle mouse
     button and moving the mouse."
 --- !u!222 &1731130901
 CanvasRenderer:

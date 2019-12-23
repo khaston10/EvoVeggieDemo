@@ -103,7 +103,7 @@ public class Tutorial : MonoBehaviour
             }
         }
 
-        else if (task7 && task8== false)
+        else if (task7 && task8 == false)
         {
             if (GetComponent<TutGameMain>().worldSize >= 30)
             {
@@ -114,6 +114,7 @@ public class Tutorial : MonoBehaviour
 
         else if (task8)
         {
+            Debug.Log("In Task 8");
             if(Input.GetKeyDown(KeyCode.Escape)){
                 Task9();
             }
@@ -143,7 +144,7 @@ public class Tutorial : MonoBehaviour
             panelPos = new Vector2(0f, 0f);
             tutorialPanel.localPosition = panelPos;
             tutorialText.rectTransform.sizeDelta = new Vector2(280, 195);
-            tutorialText.text = "The inhabitants of FlatWorld are called Plant-Eaters. \n\n You can add Plant-Eaters by pressing the ‘Plant Eaters’ " +
+            tutorialText.text = "The inhabitants of Flatopia are called Plant-Eaters. \n\n You can add Plant-Eaters by pressing the ‘Plant Eaters’ " +
                 "button found on the Control Panel \n \n Please add three plant eaters now. \n\n NOTICE: Plant-Eaters can only be added in the day time.";
         }
     }
@@ -172,7 +173,7 @@ public class Tutorial : MonoBehaviour
         panelPos = new Vector2(0f, 0f);
         tutorialPanel.localPosition = panelPos;
         tutorialText.rectTransform.sizeDelta = new Vector2(280, 55);
-        tutorialText.text = "Try adding 10 plants to FlatWorld now. \n \n NOTICE: Plants only grow at sunrise.";
+        tutorialText.text = "Try adding 10 plants to Flatopia now. \n \n NOTICE: Plants only grow at sunrise.";
 
     }
 
@@ -185,8 +186,8 @@ public class Tutorial : MonoBehaviour
         panelPos = new Vector2(0f, 0f);
         tutorialPanel.localPosition = panelPos;
         tutorialText.rectTransform.sizeDelta = new Vector2(395, 145);
-        tutorialText.text = "Available game points can be seen on the Control Panel. \n\n Making changes to FlatWorld costs game points. \n\n " +
-            "FlatWorld is feeling a little cramped now. \n\n Let's increase the world size.";
+        tutorialText.text = "Available game points can be seen on the Control Panel. \n\n Making changes to Flatopia costs game points. \n\n " +
+            "Flatopia is feeling a little cramped now. \n\n Let's increase the world size.";
 
     }
 
@@ -204,6 +205,7 @@ public class Tutorial : MonoBehaviour
 
     public void Task8()
     {
+        task8 = true;
         achievementPanel.SetActive(true);
         dayCountPanel.SetActive(true);
         // Place the next set of instructions.
