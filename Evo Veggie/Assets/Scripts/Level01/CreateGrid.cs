@@ -8,12 +8,17 @@ public class CreateGrid : MonoBehaviour
     public Transform wall;
     public Camera cam;
     public Vector3 camRotatePoint;
+    public Vector3 camPos;
     public List<Vector3> positions = new List<Vector3>();
     public float ySpeed = 20.0f;
     Transform wall1;
     Transform wall2;
     Transform wall3;
     Transform wall4;
+    public bool movingLeft = false;
+    public bool movingRight = false;
+    bool movingForward = false;
+    bool movingBackward = false;
 
 
     // Start is called before the first frame update
@@ -67,12 +72,45 @@ public class CreateGrid : MonoBehaviour
         {
             cam.transform.RotateAround(camRotatePoint, Vector3.up, Input.GetAxis("Mouse X") * ySpeed);
         }
+
+        // Get user input to control camera.
+        if (Input.GetKeyDown(KeyCode.A) && movingLeft == false) movingLeft = true;
+
+        if (Input.GetKeyUp(KeyCode.A) && movingLeft == true) movingLeft = false;
+
+        if (Input.GetKeyDown(KeyCode.D) && movingRight == false) movingRight = true;
+
+        if (Input.GetKeyUp(KeyCode.D) && movingRight == true) movingRight = false;
+
+        if (Input.GetKeyDown(KeyCode.W) && movingForward == false) movingForward = true;
+
+        if (Input.GetKeyUp(KeyCode.W) && movingForward == true) movingForward = false;
+
+        if (Input.GetKeyDown(KeyCode.S) && movingBackward == false) movingBackward = true;
+
+        if (Input.GetKeyUp(KeyCode.S) && movingBackward == true) movingBackward = false;
+
+
+        // Move camera if user is controlling it.
+        if (movingLeft) cam.gameObject.transform.Translate(-Vector3.right * Time.deltaTime);
+        
+        if (movingRight) cam.gameObject.transform.Translate(Vector3.right * Time.deltaTime);
+
+        if (movingForward) cam.gameObject.transform.Translate(Vector3.forward * Time.deltaTime);
+
+        if (movingBackward) cam.gameObject.transform.Translate(-Vector3.forward * Time.deltaTime);
+
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            UpdateCameraPos();
+        }
+
     }
 
     // Update Grid when user presses the world size button.
     public void UpdateGrid()
     {
-       Debug.Log("Add Grids");
         // Populate the news positions when player pushed the world size button.
         for (int i = 0; i < GameObject.Find("Game").GetComponent<GameMain>().worldSize; i++)
         {

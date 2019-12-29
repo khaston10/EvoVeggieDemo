@@ -76,6 +76,7 @@ public class GameMain : MonoBehaviour
     public Text feedSliderText;
     public Text caffeineSliderText;
     public Text daysUntilMeatEatersText;
+    public Text researchPointsText;
     private int daysUntilMeatEaterCounter;
 
     // Sounds to play depending on state of game.
@@ -90,6 +91,26 @@ public class GameMain : MonoBehaviour
     public Button freezeButton;
     public Button feedButton;
     public Button caffeineButton;
+    public Button advancedUpgradeButton;
+    public GameObject advancedUpgradePanel;
+    public GameObject settingsPanel;
+
+    // Bools to keep track of advanced upgrades. Bools that are not being used yet have been commented out.
+    public bool s1Unlocked = false;
+    //private bool s2Unlocked = false;
+    //private bool s3Unlocked = false;
+    //private bool s4Unlocked = false;
+    //private bool s5Unlocked = false;
+    public bool m1Unlocked = false;
+    //private bool m2Unlocked = false;
+    //private bool m3Unlocked = false;
+    //private bool m4Unlocked = false;
+    //private bool m5Unlocked = false;
+
+    // Buttons from Control Panel
+    public Button foodSpawnButton;
+    public Button worldSizeButton;
+    public Button plantEaterButton;
 
 
 
@@ -135,11 +156,13 @@ public class GameMain : MonoBehaviour
         glutonAchievement = GlobalControl.Instance.glutonAchievement;
         unlockedAchievement = GlobalControl.Instance.unlockedAchievement;
 
-        // Set sliders as invisible
+        // Set sliders, buttons and panels as invisible
         slayerSlider.gameObject.SetActive(false);
         freezeSlider.gameObject.SetActive(false);
         feedSlider.gameObject.SetActive(false);
         caffeineSlider.gameObject.SetActive(false);
+        advancedUpgradePanel.SetActive(false);
+        advancedUpgradeButton.gameObject.SetActive(false);
 
 
         daysUntilMeatEaterCounter = daysBetweenMeatEaterSpawn;
@@ -184,6 +207,11 @@ public class GameMain : MonoBehaviour
             plantEaterTimer += Time.deltaTime;
             
         }
+
+        // Get Keyboard Inputs.
+        if (Input.GetKeyDown(KeyCode.Alpha1)) foodSpawnButton.onClick.Invoke();
+        if (Input.GetKeyDown(KeyCode.Alpha2)) worldSizeButton.onClick.Invoke();
+        if (Input.GetKeyDown(KeyCode.Alpha3)) plantEaterButton.onClick.Invoke();
 
 
         //------------------------------------This code is used for debugging, remove before release.--------------------
@@ -521,6 +549,12 @@ public class GameMain : MonoBehaviour
         meatEaterSpeed = .5f;
         slowSpeedMeter = .0005f;
         medSpeedMeter = .01f;
+
+        // Update the projectile speed if there is a military.
+        if (m1Unlocked)
+        {
+            GameObject.Find("MilitaryOutpost(Clone)").GetComponent<MilitaryOutpost>().projectileSpeed = 30;
+        }
     }
 
     public void ClickFastForward()
@@ -547,6 +581,12 @@ public class GameMain : MonoBehaviour
         slowSpeedMeter = .002f;
         medSpeedMeter = .04f;
 
+        //Update projectile speed if there is a military.
+        if (m1Unlocked)
+        {
+            GameObject.Find("MilitaryOutpost(Clone)").GetComponent<MilitaryOutpost>().projectileSpeed = 120;
+        }
+
     }
 
     public void ClickFoodSpawned()
@@ -562,10 +602,22 @@ public class GameMain : MonoBehaviour
     {
         if (gamePoints > 0 && worldSize < worldSizeLimit)
         {
-            gamePoints -= 1;
+            gamePoints -= 1;  
             worldSize += 1;
             GameObject.Find("Grid").GetComponent<CreateGrid>().UpdateGrid();
             GameObject.Find("Grid").GetComponent<CreateGrid>().UpdateCameraPos();
+
+            // Update the position of the Military Outpost.
+            if (m1Unlocked)
+            {
+                GameObject.Find("MilitaryOutpost(Clone)").GetComponent<MilitaryOutpost>().UpdateOutpostPosition();
+            }
+
+            // Update the position of the Science Outpost.
+            if (s1Unlocked)
+            {
+                GameObject.Find("ScienceOutpost(Clone)").GetComponent<ScienceOutpost>().UpdateOutpostPosition();
+            }
         }
 
         // Check to see if the Land Owner achievement is unlocked.
@@ -664,6 +716,8 @@ public class GameMain : MonoBehaviour
                 unlockedImage.texture = unlockedTexture;
                 AudioSource.PlayClipAtPoint(achievementUnlocked, transform.position);
                 unlockedAchievement = true;
+
+                if (advancedUpgradeButton.isActiveAndEnabled == false) advancedUpgradeButton.gameObject.SetActive(true);
             }
         }
 
@@ -710,6 +764,8 @@ public class GameMain : MonoBehaviour
                 unlockedImage.texture = unlockedTexture;
                 AudioSource.PlayClipAtPoint(achievementUnlocked, transform.position);
                 unlockedAchievement = true;
+
+                if (advancedUpgradeButton.isActiveAndEnabled == false) advancedUpgradeButton.gameObject.SetActive(true);
             }
         }
 
@@ -764,6 +820,8 @@ public class GameMain : MonoBehaviour
                 unlockedImage.texture = unlockedTexture;
                 AudioSource.PlayClipAtPoint(achievementUnlocked, transform.position);
                 unlockedAchievement = true;
+
+                if (advancedUpgradeButton.isActiveAndEnabled == false) advancedUpgradeButton.gameObject.SetActive(true);
             }
 
         }
@@ -812,6 +870,8 @@ public class GameMain : MonoBehaviour
                 unlockedImage.texture = unlockedTexture;
                 AudioSource.PlayClipAtPoint(achievementUnlocked, transform.position);
                 unlockedAchievement = true;
+
+                if (advancedUpgradeButton.isActiveAndEnabled == false) advancedUpgradeButton.gameObject.SetActive(true);
             }
 
         }
@@ -821,5 +881,19 @@ public class GameMain : MonoBehaviour
     public void ChangeButtonColor(Button but, Color color)
     {
         but.GetComponent<Image>().color = color;
+    }
+
+    public void ClickAdvancedUpgrade()
+    {
+        if (settingsPanel.activeInHierarchy == false) advancedUpgradePanel.SetActive(true);
+    }
+
+    public void UpdateResearchPoints()
+    {
+        if (s1Unlocked)
+        {
+            researchPointsText.text = GameObject.Find("ScienceOutpost(Clone)").GetComponent<ScienceOutpost>().researchPoints.ToString();
+
+        }
     }
 }

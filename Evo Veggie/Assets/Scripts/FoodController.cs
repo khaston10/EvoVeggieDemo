@@ -41,7 +41,6 @@ public class FoodController : MonoBehaviour
 
             // Add plant's position back to food position list. 
             GameObject.Find("Game").GetComponent<GameMain>().foodPositions.Add(transform.localPosition);
-            Debug.Log("Add Plant Pos.");
             GameObject.Find("Game").GetComponent<GameMain>().foodList.Remove(transform);
             GameObject.Find("Game").GetComponent<GameMain>().gamePoints += 1;
             GameObject.Find("Game").GetComponent<GameMain>().gamePointsText.text = GameObject.Find("Game").GetComponent<GameMain>().gamePoints.ToString();

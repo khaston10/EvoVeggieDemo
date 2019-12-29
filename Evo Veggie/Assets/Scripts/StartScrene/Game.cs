@@ -205,10 +205,4 @@ public class Game : MonoBehaviour
         achievementInformationText.text = "Caffeine : Plant Eaters move 3x faster for the rest of the day.";
     }
 
-    public void ClickTutorial()
-    {
-        gamePoints = 100;
-        SaveData();
-        SceneManager.LoadScene(sceneName: "Tutorial");
-    }
 }

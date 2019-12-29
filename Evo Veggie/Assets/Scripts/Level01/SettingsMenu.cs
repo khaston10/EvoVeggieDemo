@@ -9,7 +9,7 @@ public class SettingsMenu : MonoBehaviour
     public AudioMixer mixer;
     public Dropdown resolutionDropDown;
     public GameObject SettingsPanel;
-    bool settingsActive = false;
+    public bool settingsActive = false;
     Resolution[] resoltuions;
     
 
@@ -58,6 +58,13 @@ public class SettingsMenu : MonoBehaviour
             settingsActive = false;
             GameObject.Find("Game").GetComponent<GameMain>().gamePaused = false;
         }
+    }
+
+    public void ExitPanel()
+    {
+        SettingsPanel.SetActive(false);
+        settingsActive = false;
+        GameObject.Find("Game").GetComponent<GameMain>().gamePaused = false;
     }
 
     public void SetResolution(int resolutionIndex)
