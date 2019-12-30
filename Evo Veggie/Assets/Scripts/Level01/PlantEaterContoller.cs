@@ -107,7 +107,7 @@ public class PlantEaterContoller : MonoBehaviour
        
         if (col.gameObject.tag == "plantEater")
         {
-            Physics.IgnoreCollision(col.collider, GetComponent<Collider>());
+            //Physics.IgnoreCollision(col.collider, GetComponent<Collider>());
         }
 
 

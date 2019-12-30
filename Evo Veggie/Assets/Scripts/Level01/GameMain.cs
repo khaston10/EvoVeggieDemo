@@ -26,9 +26,13 @@ public class GameMain : MonoBehaviour
     public bool meatEatersSpawnDisabled = false; // This is used to temporaly disable meat eater spawn when user kills meat eaters.
     public float plantEaterSpeed = .5f; // Set to .5 in normal speed and 2 for Fast Forward mode.
     public float caffeinePlantEaterSpeed = 1.5f; // Set to 1.5 in normal speed and 6 for Fast Forward mode.
-    public float meatEaterSpeed = .5f; // Set to .5 in normal speed and 2 for Fast Forward mode.
+    public float meatEaterSpeed = .5f; // Set to .5 in normal speed and 2 for Fast Forward mode. Then upped by .5 for each level.
+    public int meatEaterSpeedLevel = 1; // This should max out at 5.
+    public int visionDistance = 5;
+    public int MeatEaterVisionDistanceLevel = 1; // This should max out at 5.
+
     public float slowSpeedMeter = .0005f; // Set to .0005 in normal speed and .002 for Fast Forward mode.
-    public float medSpeedMeter = .01f; // Set to .01 in normal speed and .04 for Fast Forward mode.
+    public float medSpeedMeter = .001f; // Set to .001 in normal speed and .004 for Fast Forward mode.
     public Light star1;
     public Text GameSpeedDisplayText;
     public Text gamePointsText;
@@ -37,7 +41,9 @@ public class GameMain : MonoBehaviour
     public Text PlantEatersText;
     public Text dayCountText;
     public Transform planet1;
+    public Animator planetAnimator;
     public Transform star1Body;
+    public Animator starAnimator;
     public Transform food;
     public Transform plantEater;
     public Transform meatEater;
@@ -78,6 +84,8 @@ public class GameMain : MonoBehaviour
     public Text daysUntilMeatEatersText;
     public Text researchPointsText;
     private int daysUntilMeatEaterCounter;
+    private int randomMeatEaterUpgrade = 0;
+    
 
     // Sounds to play depending on state of game.
     public AudioClip buttonDoesNotWork;
@@ -138,7 +146,9 @@ public class GameMain : MonoBehaviour
     private float planetXPos;
     private Color starvingPlantEater = new Color(.8f, .7f, .3f, .1f);
     private Color starvingMeatEater = new Color(.8f, .7f, .3f, .1f);
+    private Color frozenMeatEater = new Color(.1f, .1f, .1f, .5f);
     private Color FedPlantEater = new Color(.1f, 1f, .1f, 1f);
+    private Color CafeinePlantEater = new Color(1f, .1f, .1f, 1f);
 
 
     // Start is called before the first frame update
@@ -208,6 +218,7 @@ public class GameMain : MonoBehaviour
             
         }
 
+
         // Get Keyboard Inputs.
         if (Input.GetKeyDown(KeyCode.Alpha1)) foodSpawnButton.onClick.Invoke();
         if (Input.GetKeyDown(KeyCode.Alpha2)) worldSizeButton.onClick.Invoke();
@@ -241,6 +252,27 @@ public class GameMain : MonoBehaviour
         // Restock meat eaters at the beginning of the day if is time, then reset the counter.
         if (meaterEaterSpawnCounter == daysBetweenMeatEaterSpawn && meatEatersSpawnDisabled == false)
         {
+            // Pick a random upgrade.
+            if (day > 6)
+            {
+                randomMeatEaterUpgrade = Random.Range(0, 2);
+            }
+            
+            if (randomMeatEaterUpgrade == 1 && meatEaterSpeedLevel < 5)
+            {
+                // Upgrade Speed.
+                meatEaterSpeedLevel += 1;
+                GameObject.Find("Canvas").GetComponent<StoryTeller>().MeatEatersUpgradeSpeed = true;
+            }
+
+            else if (randomMeatEaterUpgrade == 2 && MeatEaterVisionDistanceLevel < 5)
+            {
+                // Upgrade Vision.
+                MeatEaterVisionDistanceLevel += 1;
+                visionDistance += 3;
+                GameObject.Find("Canvas").GetComponent<StoryTeller>().MeatEatersUpgradeVision = true;
+            }
+
             for (int i = 0; i < meatEaterSpawnAmount; i++)
             {
                 // Pick a random position.
@@ -299,7 +331,7 @@ public class GameMain : MonoBehaviour
 
         if (freezeUpgradeUnlocked)
         {
-            if (freezeSlider.value < 10) freezeSlider.value += slowSpeedMeter;
+            if (freezeSlider.value < 10) freezeSlider.value += medSpeedMeter;
             else if (freezeSlider.isActiveAndEnabled)
             {
                 AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
@@ -311,7 +343,7 @@ public class GameMain : MonoBehaviour
 
         if (feedUpgradeUnlocked)
         {
-            if (feedSlider.value < 10) feedSlider.value += slowSpeedMeter;
+            if (feedSlider.value < 10) feedSlider.value += medSpeedMeter;
             else if (feedSlider.isActiveAndEnabled)
             {
                 AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
@@ -323,7 +355,7 @@ public class GameMain : MonoBehaviour
 
         if (caffeineUpgradeUnlocked)
         {
-            if (caffeineSlider.value < 10) caffeineSlider.value += slowSpeedMeter;
+            if (caffeineSlider.value < 10) caffeineSlider.value += medSpeedMeter;
             else if (caffeineSlider.isActiveAndEnabled)
             {
                 AudioSource.PlayClipAtPoint(upgradeUnlocked, transform.position);
@@ -356,6 +388,19 @@ public class GameMain : MonoBehaviour
             star1Body.position = new Vector3(xPos, yPos, worldSize / 2);
         }
 
+        // Update Star animation when game is paused.
+        if (starAnimator.GetCurrentAnimatorStateInfo(0).IsName("SpinStar1") && gamePaused)
+        {
+            starAnimator.Play("StarPaused");
+        }
+
+        else if (starAnimator.GetCurrentAnimatorStateInfo(0).IsName("StarPaused") && gamePaused == false)
+        {
+            starAnimator.Play("SpinStar1");
+        }
+
+
+
         //------------------------------------This code is used for debugging, remove before release.--------------------
         if (movePlanetOn)
         {
@@ -364,11 +409,22 @@ public class GameMain : MonoBehaviour
             planetXPos = worldSize * Mathf.Sin(timerSpeedCoefficient * timer) + worldSize / 2;
             planet1.position = new Vector3(planetXPos, planetYPos, planetZPos);
         }
-        
 
-        // Move the source of light, star1.
-        star1.intensity = worldSize / 5;
-        yPos = worldSize * Mathf.Sin(timerSpeedCoefficient * timer);
+        // Update Planet animation when game is paused.
+        if (planetAnimator.GetCurrentAnimatorStateInfo(0).IsName("StarSpin") && gamePaused)
+        {
+            planetAnimator.Play("PlanetPause");
+        }
+
+        else if (planetAnimator.GetCurrentAnimatorStateInfo(0).IsName("PlanetPause") && gamePaused == false)
+        {
+            planetAnimator.Play("StarSpin");
+        }
+
+
+
+            // Move the source of light, star1.
+            yPos = worldSize * Mathf.Sin(timerSpeedCoefficient * timer);
         xPos = worldSize * Mathf.Cos(timerSpeedCoefficient * timer) + worldSize / 2;
         star1.transform.position = new Vector3(xPos, yPos, worldSize / 2);
 
@@ -486,6 +542,7 @@ public class GameMain : MonoBehaviour
                 {
                     plantEaterList[i].GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = starvingPlantEater;
                 }
+
             }
 
             for (int i = 0; i < meatEaterList.Count; i++)
@@ -497,6 +554,33 @@ public class GameMain : MonoBehaviour
                     meatEaterList[i].GetChild(0).GetChild(3).GetComponent<Renderer>().material.color = starvingMeatEater;
                 }
             }
+
+            // If the user is using the tutorial. Open tutorial panel.
+            if(day == 2 && GameObject.Find("Canvas").GetComponent<StoryTeller>().tutorialOn)
+            {
+                GameObject.Find("Canvas").GetComponent<StoryTeller>().askUserToFindTheDay = true;
+            }
+
+            else if (day == 3 && GameObject.Find("Canvas").GetComponent<StoryTeller>().tutorialOn)
+            {
+                GameObject.Find("Canvas").GetComponent<StoryTeller>().askUserToFindGamePoints = true;
+            }
+
+            else if (day == 4 && GameObject.Find("Canvas").GetComponent<StoryTeller>().tutorialOn)
+            {
+                GameObject.Find("Canvas").GetComponent<StoryTeller>().askUserToUseSettings = true;
+            }
+
+            else if (day == 5 && GameObject.Find("Canvas").GetComponent<StoryTeller>().tutorialOn)
+            {
+                GameObject.Find("Canvas").GetComponent<StoryTeller>().askUserToLearnAboutMeat = true;
+            }
+
+            else if (day == 6 && GameObject.Find("Canvas").GetComponent<StoryTeller>().tutorialOn)
+            {
+                GameObject.Find("Canvas").GetComponent<StoryTeller>().endTutorial = true;
+            }
+
         }
     }
 
@@ -524,6 +608,12 @@ public class GameMain : MonoBehaviour
             gamePaused = true;
             gameSpeed = 0;
         }
+
+        // if there is Science Outpost this will pasue the outpost so Research points and not being earned.
+        if (s1Unlocked)
+        {
+            GameObject.Find("ScienceOutpost(Clone)").GetComponent<ScienceOutpost>().paused = true;
+        }
     }
 
     public void ClickForward()
@@ -546,14 +636,20 @@ public class GameMain : MonoBehaviour
         // Update the plant eater's and meat eater's speed to match fast forward.
         plantEaterSpeed = .5f;
         caffeinePlantEaterSpeed = 1.5f;
-        meatEaterSpeed = .5f;
+        meatEaterSpeed = .25f * meatEaterSpeedLevel + .25f;
         slowSpeedMeter = .0005f;
-        medSpeedMeter = .01f;
+        medSpeedMeter = .001f;
 
         // Update the projectile speed if there is a military.
         if (m1Unlocked)
         {
             GameObject.Find("MilitaryOutpost(Clone)").GetComponent<MilitaryOutpost>().projectileSpeed = 30;
+        }
+
+        // if there is Science Outpost this will un-pause the outpost so Research points and not being earned.
+        if (s1Unlocked)
+        {
+            GameObject.Find("ScienceOutpost(Clone)").GetComponent<ScienceOutpost>().paused = false;
         }
     }
 
@@ -577,14 +673,20 @@ public class GameMain : MonoBehaviour
         // Update the plant eater's and meat eater's speed to match fast forward.
         plantEaterSpeed = 2f;
         caffeinePlantEaterSpeed = 6f;
-        meatEaterSpeed = 2f;
+        meatEaterSpeed = meatEaterSpeedLevel + 1;
         slowSpeedMeter = .002f;
-        medSpeedMeter = .04f;
+        medSpeedMeter = .004f;
 
         //Update projectile speed if there is a military.
         if (m1Unlocked)
         {
             GameObject.Find("MilitaryOutpost(Clone)").GetComponent<MilitaryOutpost>().projectileSpeed = 120;
+        }
+
+        // if there is Science Outpost this will un-pause the outpost so Research points and not being earned.
+        if (s1Unlocked)
+        {
+            GameObject.Find("ScienceOutpost(Clone)").GetComponent<ScienceOutpost>().paused = false;
         }
 
     }
@@ -727,7 +829,7 @@ public class GameMain : MonoBehaviour
 
     public void ClickFreezeUpgrade()
     {
-        if (freezeUpgradeUnlocked && freezeSlider.value > 9)
+        if (freezeUpgradeUnlocked && freezeSlider.value > 9 && creaturesAwake)
         {
             ChangeButtonColor(freezeButton, Color.red);
 
@@ -740,9 +842,17 @@ public class GameMain : MonoBehaviour
 
             // Reset slider.
             freezeSlider.value = 0f;
+
+            // Change skin color.
+            for (int i = 0; i < meatEaterList.Count; i++)
+            {
+                meatEaterList[i].GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = frozenMeatEater;
+                meatEaterList[i].GetChild(0).GetChild(2).GetComponent<Renderer>().material.color = frozenMeatEater;
+                meatEaterList[i].GetChild(0).GetChild(3).GetComponent<Renderer>().material.color = frozenMeatEater;
+            }
         }
 
-        else if (freezeUpgradeUnlocked == false && gamePoints >= 20)
+        else if (freezeUpgradeUnlocked == false && gamePoints >= 20 && creaturesAwake)
         {
             ChangeButtonColor(freezeButton, Color.red);
 
@@ -756,6 +866,15 @@ public class GameMain : MonoBehaviour
             freezeSlider.gameObject.SetActive(true);
             freezeUpgradeUnlocked = true;
             gamePoints -= 20;
+
+            // Change skin color.
+            for (int i = 0; i < meatEaterList.Count; i++)
+            {
+                meatEaterList[i].GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = frozenMeatEater;
+                meatEaterList[i].GetChild(0).GetChild(2).GetComponent<Renderer>().material.color = frozenMeatEater;
+                meatEaterList[i].GetChild(0).GetChild(3).GetComponent<Renderer>().material.color = frozenMeatEater;
+
+            }
 
             // Check to see if all achievements are unlocked.
             if (caffeineUpgradeUnlocked && feedUpgradeUnlocked && freezeUpgradeUnlocked && slayerUpgradeUnlocked && unlockedAchievement == false)
@@ -846,6 +965,12 @@ public class GameMain : MonoBehaviour
             // Set caffeine speed on;
             caffeineSpeedOn = true;
 
+            // Change the skin color of the plant Eaters.
+            for (int i = 0; i < plantEaterList.Count; i++)
+            {
+                plantEaterList[i].GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = CafeinePlantEater;
+            }
+
         }
 
         else if (caffeineUpgradeUnlocked == false && gamePoints >= 10)
@@ -872,6 +997,12 @@ public class GameMain : MonoBehaviour
                 unlockedAchievement = true;
 
                 if (advancedUpgradeButton.isActiveAndEnabled == false) advancedUpgradeButton.gameObject.SetActive(true);
+            }
+
+            // Change the skin color of the plant Eaters.
+            for (int i = 0; i < plantEaterList.Count; i++)
+            {
+                plantEaterList[i].GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = CafeinePlantEater;
             }
 
         }

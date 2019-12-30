@@ -187,7 +187,7 @@ public class Game : MonoBehaviour
 
     public void ClickSlayerUpgrade()
     {
-        achievementInformationText.text = "Slayer: Kills all Meat Eaters on Flatopia.";
+        achievementInformationText.text = "Slayer: Kill all Meat Eaters on Flatopia.";
     }
 
     public void ClickFreezeUpgrade()

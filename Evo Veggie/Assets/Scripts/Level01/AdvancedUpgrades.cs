@@ -50,7 +50,7 @@ public class AdvancedUpgrades : MonoBehaviour
 
     public void HoverS1()
     {
-        advacedUpgradeText.text = "Cost: 100 - Get Research Facility \nRequires: World Size 10 or larger";
+        advacedUpgradeText.text = "Cost: 20 - Get Research Facility \nRequires: World Size 10 or larger";
     }
 
     public void HoverS2()
@@ -60,7 +60,7 @@ public class AdvancedUpgrades : MonoBehaviour
 
     public void HoverM1()
     {
-        advacedUpgradeText.text = "Cost: 200 - Get Military Outpost";
+        advacedUpgradeText.text = "Cost: 10 - Get Military Outpost\nResearchPoints: 10";
     }
 
     public void HoverM2()
@@ -75,12 +75,12 @@ public class AdvancedUpgrades : MonoBehaviour
 
     public void ClickS1()
     {
-        if (GameObject.Find("Game").GetComponent<GameMain>().gamePoints > 100 && GameObject.Find("Game").GetComponent<GameMain>().s1Unlocked == false)
+        if (GameObject.Find("Game").GetComponent<GameMain>().gamePoints > 20 && GameObject.Find("Game").GetComponent<GameMain>().s1Unlocked == false)
         {
             if (GameObject.Find("Game").GetComponent<GameMain>().worldSize >= 10)
             {
                 S1.GetComponent<Image>().color = Color.green;
-                GameObject.Find("Game").GetComponent<GameMain>().gamePoints -= 100;
+                GameObject.Find("Game").GetComponent<GameMain>().gamePoints -= 20;
                 GameObject.Find("Game").GetComponent<GameMain>().s1Unlocked = true;
 
                 // Create the Science Outpost.
@@ -102,13 +102,15 @@ public class AdvancedUpgrades : MonoBehaviour
 
     public void ClickM1()
     {
-        if (GameObject.Find("Game").GetComponent<GameMain>().gamePoints > 200 && GameObject.Find("Game").GetComponent<GameMain>().m1Unlocked == false)
+        if (GameObject.Find("Game").GetComponent<GameMain>().gamePoints > 10 && GameObject.Find("Game").GetComponent<GameMain>().m1Unlocked == false 
+            && GameObject.Find("ScienceOutpost(Clone)").GetComponent<ScienceOutpost>().researchPoints > 10)
         {
             if (GameObject.Find("Game").GetComponent<GameMain>().worldSize >= 10)
             {
                 M1.GetComponent<Image>().color = Color.green;
                 GameObject.Find("Game").GetComponent<GameMain>().gamePoints -= 200;
                 GameObject.Find("Game").GetComponent<GameMain>().m1Unlocked = true;
+                GameObject.Find("ScienceOutpost(Clone)").GetComponent<ScienceOutpost>().researchPoints -= 10;
 
                 // Create the Military Outpost.
                 Transform m = Instantiate(militaryOutpost);

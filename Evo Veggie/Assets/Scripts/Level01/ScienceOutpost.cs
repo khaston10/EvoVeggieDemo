@@ -14,6 +14,7 @@ public class ScienceOutpost : MonoBehaviour
     public Vector3 hidePOS;
     public int researchPointsSpeed = 10;
     public AudioClip pointsGained;
+    public bool paused; // This bool will be updated from the GameMain script so that we are not using the GameFind function every frame.
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +32,11 @@ public class ScienceOutpost : MonoBehaviour
     void Update()
     {
         // Start the timer that keeps track of firing.
-        timer += Time.deltaTime;
+        if (paused == false)
+        {
+            timer += Time.deltaTime;
+        }
+        
 
         if (timer >= researchPointsSpeed)
         {

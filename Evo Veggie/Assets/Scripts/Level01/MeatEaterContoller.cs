@@ -8,7 +8,7 @@ public class MeatEaterContoller : MonoBehaviour
     public int daysSinceLastEaten = 0;
     public Vector3 relativePos;
     public Quaternion rotation;
-    public int visionDistance;
+    
 
     private int direction = 0; // 0: Move y+, 1: Move y-, 2: Move x+, 3: Move x-
     private float timer = 0.0f;
@@ -21,7 +21,7 @@ public class MeatEaterContoller : MonoBehaviour
         // Initialize variables.
         relativePos = new Vector3(0f, 0f, 0f);
         rotation = new Quaternion(0f, 0f, 0f, 0f);
-        visionDistance = 5;
+        GameObject.Find("Game").GetComponent<GameMain>().visionDistance = 5;
     }
 
     // Update is called once per frame
@@ -55,7 +55,7 @@ public class MeatEaterContoller : MonoBehaviour
         {
             for (int i = 0; i < GameObject.Find("Game").GetComponent<GameMain>().plantEaterList.Count; i++)
             {
-                if (Vector3.Distance(transform.position, GameObject.Find("Game").GetComponent<GameMain>().plantEaterList[i].position) <= visionDistance)
+                if (Vector3.Distance(transform.position, GameObject.Find("Game").GetComponent<GameMain>().plantEaterList[i].position) <= GameObject.Find("Game").GetComponent<GameMain>().visionDistance)
                 {
                     // Save the plant eater position.
                     relativePos = GameObject.Find("Game").GetComponent<GameMain>().plantEaterList[i].position - transform.position;
