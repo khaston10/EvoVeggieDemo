@@ -70,8 +70,12 @@ public class MilitaryOutpost : MonoBehaviour
 
     public void Fire(Vector3 target)
     {
-        // Animate shot.
-        animator.Play("OutpostFireAnim");
+        if (GameObject.Find("Game").GetComponent<GameMain>().m2Unlocked == false)
+        {
+            // Animate shot.
+            animator.Play("OutpostFireAnim");
+
+        }
 
 
         // Handles the motion of projectile.

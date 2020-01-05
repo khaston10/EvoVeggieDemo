@@ -10,7 +10,7 @@ public class MeatEaterContoller : MonoBehaviour
     public Quaternion rotation;
     
 
-    private int direction = 0; // 0: Move y+, 1: Move y-, 2: Move x+, 3: Move x-
+    public int direction = 0; // 0: Move y+, 1: Move y-, 2: Move x+, 3: Move x-
     private float timer = 0.0f;
     private Color FedMeatEater = new Color(.55f, .33f, .04f, 1f);
     public AudioClip EatSound;
@@ -61,7 +61,6 @@ public class MeatEaterContoller : MonoBehaviour
                     relativePos = GameObject.Find("Game").GetComponent<GameMain>().plantEaterList[i].position - transform.position;
                     relativePos.y = 0f;
                     direction = 4;
-                    //Debug.Log(Vector3.Distance(transform.position, GameObject.Find("Game").GetComponent<GameMain>().foodList[i].position));
                 }
             }
         }
@@ -75,10 +74,10 @@ public class MeatEaterContoller : MonoBehaviour
 
             direction = Random.Range(0, 4);
 
-            if (direction == 0) relativePos.x += 10;
-            else if (direction == 1) relativePos.x -= 10;
-            else if (direction == 2) relativePos.z += 10;
-            else if (direction == 3) relativePos.z -= 10;
+            if (direction == 0) relativePos.x += 50;
+            else if (direction == 1) relativePos.x -= 50;
+            else if (direction == 2) relativePos.z += 50;
+            else if (direction == 3) relativePos.z -= 50;
         }
 
         // Rotate the plant eater.
@@ -87,15 +86,11 @@ public class MeatEaterContoller : MonoBehaviour
         transform.rotation = rotation;
 
         // Reset the direction variable. This will help in the case that the plant eater eats the last plant.
-        direction = 0;
-
-        //direction = Random.Range(0, 4);
-
-        //if (direction == 0) transform.localRotation = Quaternion.Euler(0, 90, 0);
-        //else if (direction == 1) transform.localRotation = Quaternion.Euler(0, -90, 0);
-        //else if (direction == 2) transform.localRotation = Quaternion.Euler(0, 180, 0);
-        //else if (direction == 3) transform.localRotation = Quaternion.Euler(0, 0, 0);
-
+        if (direction == 4)
+        {
+            direction = Random.Range(0, 4);
+        }
+        
 
     }
 

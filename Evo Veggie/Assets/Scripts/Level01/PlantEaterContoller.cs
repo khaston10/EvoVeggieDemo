@@ -86,7 +86,10 @@ public class PlantEaterContoller : MonoBehaviour
         transform.rotation = rotation;
 
         // Reset the direction variable. This will help in the case that the plant eater eats the last plant.
-        direction = 0;
+        if (direction == 4)
+        {
+            direction = Random.Range(0, 4);
+        }
 
 
 

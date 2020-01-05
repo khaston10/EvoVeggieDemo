@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class EndMain : MonoBehaviour
 {
+    public bool gameWon;
     public int worldSize;
     public int day;
     public bool landOwnerAchievement;
@@ -28,18 +29,30 @@ public class EndMain : MonoBehaviour
     public RawImage unlockedImage;
     public Texture unlockedTexture;
     public Text dayText;
+    public Text titleText;
+    public Text bodyText;
 
     // Start is called before the first frame update
     void Start()
     {
         worldSize = GlobalControl.Instance.worldSize;
         day = GlobalControl.Instance.day;
+        gameWon = GlobalControl.Instance.gameWon;
         landOwnerAchievement = GlobalControl.Instance.landOwnerAchievement;
         genocideAchievement = GlobalControl.Instance.genocideAchievement;
         ninjaAchievement = GlobalControl.Instance.ninjaAchievement;
         survivalistAchievement = GlobalControl.Instance.survivalistAchievement;
         glutonAchievement = GlobalControl.Instance.glutonAchievement;
         unlockedAchievement = GlobalControl.Instance.unlockedAchievement;
+
+        dayText.text = day.ToString();
+
+        if (gameWon)
+        {
+            titleText.text = "CONGRATULATIONS";
+            bodyText.text = "Thank you for helping the Plant-Eaters survive.\n\nThe adventure will continue soon!";
+            dayText.text = "";
+        }
 
         // Load Achievement Icons.
         if (landOwnerAchievement)
@@ -73,7 +86,7 @@ public class EndMain : MonoBehaviour
             unlockedImage.texture = unlockedTexture;
         }
 
-        dayText.text = day.ToString();
+        
 
     }
 

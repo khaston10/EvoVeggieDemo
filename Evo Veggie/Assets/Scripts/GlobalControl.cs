@@ -16,6 +16,7 @@ public class GlobalControl : MonoBehaviour
     public bool survivalistAchievement;
     public bool glutonAchievement;
     public bool unlockedAchievement;
+    public bool gameWon;
     public int day;
 
     private void Awake()

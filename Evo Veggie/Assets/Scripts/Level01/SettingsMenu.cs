@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
+using System.Linq;
 
 public class SettingsMenu : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class SettingsMenu : MonoBehaviour
         resolutionDropDown.ClearOptions();
 
         List<string> options = new List<string>();
+        
 
         int currentResolutionIndex = 0;
 
@@ -38,6 +40,9 @@ public class SettingsMenu : MonoBehaviour
                 currentResolutionIndex = i;
             }
         }
+
+        // Delete duplicate resolutions.
+        options = options.Distinct().ToList();
 
         // Add options to the drop down.
         resolutionDropDown.AddOptions(options);
@@ -87,5 +92,10 @@ public class SettingsMenu : MonoBehaviour
     public void SetFullScreen(bool isFullScreen)
     {
         Screen.fullScreen = isFullScreen;
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 }

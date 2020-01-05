@@ -34,7 +34,7 @@ public class FoodController : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("plantEater") && colliderActive  && other.GetComponent<PlantEaterContoller>().foodEaten <= 2)
+        if (other.CompareTag("plantEater") && colliderActive  && other.GetComponent<PlantEaterContoller>().foodEaten <= 2 || GameObject.Find("Game").GetComponent<GameMain>().caffeineSpeedOn)
         {
 
             colliderActive = false;

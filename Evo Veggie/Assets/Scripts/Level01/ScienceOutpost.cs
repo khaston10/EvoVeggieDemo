@@ -5,14 +5,13 @@ using UnityEngine;
 public class ScienceOutpost : MonoBehaviour
 {
     private float timer = 0f;
-    public int researchPoints = 0;
     public Transform plus1;
-    public Transform p;
-    public Vector3 targetPOS;
-    public bool plus1IsActive = false;
+    private Transform p;
+    private Vector3 targetPOS;
+    private bool plus1IsActive = false;
     public int plus1Speed = 3;
     public Vector3 hidePOS;
-    public int researchPointsSpeed = 10;
+    public int researchPointsSpeed;
     public AudioClip pointsGained;
     public bool paused; // This bool will be updated from the GameMain script so that we are not using the GameFind function every frame.
 
@@ -41,7 +40,7 @@ public class ScienceOutpost : MonoBehaviour
         if (timer >= researchPointsSpeed)
         {
             AudioSource.PlayClipAtPoint(pointsGained, transform.position);
-            researchPoints += 1;
+            GameObject.Find("Game").GetComponent<GameMain>().researchPoints += 1;
             GameObject.Find("Game").GetComponent<GameMain>().UpdateResearchPoints();
             timer = 0;
             Vector3 aboveOutpostPosition = new Vector3(GameObject.Find("Game").GetComponent<GameMain>().worldSize + 1, 3f, GameObject.Find("Game").GetComponent<GameMain>().worldSize / 2);

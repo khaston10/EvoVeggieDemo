@@ -105,7 +105,6 @@ public class StoryTeller : MonoBehaviour
             {
                 gotIt = false;
                 askUserToFindTheDay = false;
-                UnhideButtons();
                 plantEaters = GameObject.Find("Game").GetComponent<GameMain>().plantEaters;
                 foodSpawned = GameObject.Find("Game").GetComponent<GameMain>().foodSpawned;
                 askUserToUseTheControlPanel = true;
@@ -115,8 +114,6 @@ public class StoryTeller : MonoBehaviour
         else if (askUserToUseTheControlPanel)
         {
             // Hide Buttons.
-            yesButton.gameObject.SetActive(false);
-            noButton.gameObject.SetActive(false);
             gotItButton.gameObject.SetActive(false);
 
             UpdatePanel("You currently have " + plantEaters.ToString() + " Plant-Eater(s) and "+ foodSpawned.ToString() + 
@@ -150,15 +147,12 @@ public class StoryTeller : MonoBehaviour
                 gotIt = false;
                 askUserToFindGamePoints = false;
                 askToUseTheSpeedPanel = true;
-                UnhideButtons();
             }
         }
 
         else if (askToUseTheSpeedPanel)
         {
             // Hide Buttons.
-            yesButton.gameObject.SetActive(false);
-            noButton.gameObject.SetActive(false);
             gotItButton.gameObject.SetActive(false);
 
             UpdatePanel("The Speed Panel is located at the top of the screen.\n\nHere you can pause and " +

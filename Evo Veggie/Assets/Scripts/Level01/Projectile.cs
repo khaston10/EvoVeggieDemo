@@ -29,8 +29,17 @@ public class Projectile : MonoBehaviour
             Destroy(col.gameObject);
             GameObject.Find("Game").GetComponent<GameMain>().meatEaters -= 1;
 
-            // Hide Projectile off screen.
-            GameObject.Find("MilitaryOutpost(Clone)").GetComponent<MilitaryOutpost>().projectileIsActive = false;
+            if (GameObject.Find("Game").GetComponent<GameMain>().m1Unlocked && GameObject.Find("Game").GetComponent<GameMain>().m2Unlocked == false)
+            {
+                // Hide Projectile off screen.
+                GameObject.Find("MilitaryOutpost(Clone)").GetComponent<MilitaryOutpost>().projectileIsActive = false;
+            }
+            
+            else if (GameObject.Find("Game").GetComponent<GameMain>().m2Unlocked)
+            {
+                // Hide Projectile off screen.
+                GameObject.Find("MilitaryOutpost2(Clone)").GetComponent<MilitaryOutpost>().projectileIsActive = false;
+            }
         }
 
 

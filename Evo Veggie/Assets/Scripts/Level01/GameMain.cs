@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class GameMain : MonoBehaviour
 {
+    public bool gameWon;
     public int worldSize;
     public int foodSpawned;
     public int plantEaters;
@@ -85,7 +86,8 @@ public class GameMain : MonoBehaviour
     public Text researchPointsText;
     private int daysUntilMeatEaterCounter;
     private int randomMeatEaterUpgrade = 0;
-    
+    public int researchPoints = 0;
+
 
     // Sounds to play depending on state of game.
     public AudioClip buttonDoesNotWork;
@@ -105,12 +107,12 @@ public class GameMain : MonoBehaviour
 
     // Bools to keep track of advanced upgrades. Bools that are not being used yet have been commented out.
     public bool s1Unlocked = false;
-    //private bool s2Unlocked = false;
+    public bool s2Unlocked = false;
     //private bool s3Unlocked = false;
     //private bool s4Unlocked = false;
     //private bool s5Unlocked = false;
     public bool m1Unlocked = false;
-    //private bool m2Unlocked = false;
+    public bool m2Unlocked = false;
     //private bool m3Unlocked = false;
     //private bool m4Unlocked = false;
     //private bool m5Unlocked = false;
@@ -158,6 +160,7 @@ public class GameMain : MonoBehaviour
         foodSpawned = GlobalControl.Instance.foodSpawned;
         plantEaters = GlobalControl.Instance.plantEaters;
         gamePoints = GlobalControl.Instance.gamePoints;
+        gameWon = GlobalControl.Instance.gameWon;
         day = GlobalControl.Instance.day;
         landOwnerAchievement = GlobalControl.Instance.landOwnerAchievement;
         genocideAchievement = GlobalControl.Instance.genocideAchievement;
@@ -255,7 +258,7 @@ public class GameMain : MonoBehaviour
             // Pick a random upgrade.
             if (day > 6)
             {
-                randomMeatEaterUpgrade = Random.Range(0, 2);
+                randomMeatEaterUpgrade = Random.Range(0, 3);
             }
             
             if (randomMeatEaterUpgrade == 1 && meatEaterSpeedLevel < 5)
@@ -431,12 +434,7 @@ public class GameMain : MonoBehaviour
         // Take care of end of day tasks.
         if (timer >= lengthOfDay)
         {
-            // Check to see if the game is over.
-            if (plantEaters == 0)
-            {
-                SaveData();
-                SceneManager.LoadScene(sceneName: "EndScreen");
-            }
+            
             // Restock food at the beginning of each day.
             int currentFoodAmount = foodList.Count;
             for (int i = currentFoodAmount; i < foodSpawned; i++ )
@@ -581,6 +579,21 @@ public class GameMain : MonoBehaviour
                 GameObject.Find("Canvas").GetComponent<StoryTeller>().endTutorial = true;
             }
 
+            // Check to see if the game is over.
+            if (plantEaters == 0)
+            {
+                SaveData();
+                SceneManager.LoadScene(sceneName: "EndScreen");
+            }
+
+            // Check to see if the game has been won.
+            if (ninjaAchievement && genocideAchievement && glutonAchievement && survivalistAchievement && landOwnerAchievement && unlockedAchievement && s2Unlocked && m2Unlocked)
+            {
+                gameWon = true;
+                SaveData();
+                SceneManager.LoadScene(sceneName: "EndScreen");
+            }
+
         }
     }
 
@@ -591,6 +604,7 @@ public class GameMain : MonoBehaviour
         GlobalControl.Instance.foodSpawned = foodSpawned;
         GlobalControl.Instance.plantEaters = plantEaters;
         GlobalControl.Instance.gamePoints = gamePoints;
+        GlobalControl.Instance.gameWon = gameWon; ;
         GlobalControl.Instance.day = day;
         GlobalControl.Instance.landOwnerAchievement = landOwnerAchievement;
         GlobalControl.Instance.ninjaAchievement = ninjaAchievement;
@@ -610,9 +624,14 @@ public class GameMain : MonoBehaviour
         }
 
         // if there is Science Outpost this will pasue the outpost so Research points and not being earned.
-        if (s1Unlocked)
+        if (s1Unlocked && s2Unlocked == false)
         {
             GameObject.Find("ScienceOutpost(Clone)").GetComponent<ScienceOutpost>().paused = true;
+        }
+
+        else if (s2Unlocked)
+        {
+            GameObject.Find("ScienceOutpost2(Clone)").GetComponent<ScienceOutpost>().paused = true;
         }
     }
 
@@ -641,15 +660,27 @@ public class GameMain : MonoBehaviour
         medSpeedMeter = .001f;
 
         // Update the projectile speed if there is a military.
-        if (m1Unlocked)
+        if (m1Unlocked && m2Unlocked ==false)
         {
             GameObject.Find("MilitaryOutpost(Clone)").GetComponent<MilitaryOutpost>().projectileSpeed = 30;
         }
 
+        else if (m2Unlocked)
+        {
+            GameObject.Find("MilitaryOutpost2(Clone)").GetComponent<MilitaryOutpost>().projectileSpeed = 30;
+        }
+
         // if there is Science Outpost this will un-pause the outpost so Research points and not being earned.
-        if (s1Unlocked)
+        if (s1Unlocked && s2Unlocked == false)
         {
             GameObject.Find("ScienceOutpost(Clone)").GetComponent<ScienceOutpost>().paused = false;
+            GameObject.Find("ScienceOutpost(Clone)").GetComponent<ScienceOutpost>().researchPointsSpeed = 10;
+        }
+
+        else if (s2Unlocked)
+        {
+            GameObject.Find("ScienceOutpost2(Clone)").GetComponent<ScienceOutpost>().paused = false;
+            GameObject.Find("ScienceOutpost2(Clone)").GetComponent<ScienceOutpost>().researchPointsSpeed = 4;
         }
     }
 
@@ -678,15 +709,28 @@ public class GameMain : MonoBehaviour
         medSpeedMeter = .004f;
 
         //Update projectile speed if there is a military.
-        if (m1Unlocked)
+        if (m1Unlocked && m2Unlocked ==false)
         {
             GameObject.Find("MilitaryOutpost(Clone)").GetComponent<MilitaryOutpost>().projectileSpeed = 120;
         }
 
+        else if (m2Unlocked)
+        {
+            GameObject.Find("MilitaryOutpost2(Clone)").GetComponent<MilitaryOutpost>().projectileSpeed = 120;
+        }
+
         // if there is Science Outpost this will un-pause the outpost so Research points and not being earned.
-        if (s1Unlocked)
+        if (s1Unlocked && s2Unlocked == false)
         {
             GameObject.Find("ScienceOutpost(Clone)").GetComponent<ScienceOutpost>().paused = false;
+            //This is not the correct value but it is close. 10 divided by 4.
+            GameObject.Find("ScienceOutpost(Clone)").GetComponent<ScienceOutpost>().researchPointsSpeed = 2;
+        }
+
+        else if (s2Unlocked)
+        {
+            GameObject.Find("ScienceOutpost2(Clone)").GetComponent<ScienceOutpost>().paused = false;
+            GameObject.Find("ScienceOutpost2(Clone)").GetComponent<ScienceOutpost>().researchPointsSpeed = 1;
         }
 
     }
@@ -710,15 +754,25 @@ public class GameMain : MonoBehaviour
             GameObject.Find("Grid").GetComponent<CreateGrid>().UpdateCameraPos();
 
             // Update the position of the Military Outpost.
-            if (m1Unlocked)
+            if (m1Unlocked && m2Unlocked == false)
             {
                 GameObject.Find("MilitaryOutpost(Clone)").GetComponent<MilitaryOutpost>().UpdateOutpostPosition();
             }
 
+            else if (m2Unlocked)
+            {
+                GameObject.Find("MilitaryOutpost2(Clone)").GetComponent<MilitaryOutpost>().UpdateOutpostPosition();
+            }
+
             // Update the position of the Science Outpost.
-            if (s1Unlocked)
+            if (s1Unlocked && s2Unlocked == false)
             {
                 GameObject.Find("ScienceOutpost(Clone)").GetComponent<ScienceOutpost>().UpdateOutpostPosition();
+            }
+
+            else if (s2Unlocked)
+            {
+                GameObject.Find("ScienceOutpost2(Clone)").GetComponent<ScienceOutpost>().UpdateOutpostPosition();
             }
         }
 
@@ -950,7 +1004,7 @@ public class GameMain : MonoBehaviour
 
     public void ClickCaffeineUpgrade()
     {
-        if (caffeineUpgradeUnlocked && caffeineSlider.value > 9)
+        if (caffeineUpgradeUnlocked && caffeineSlider.value > 9 && creaturesAwake)
         {
 
             ChangeButtonColor(caffeineButton, Color.red);
@@ -1023,7 +1077,7 @@ public class GameMain : MonoBehaviour
     {
         if (s1Unlocked)
         {
-            researchPointsText.text = GameObject.Find("ScienceOutpost(Clone)").GetComponent<ScienceOutpost>().researchPoints.ToString();
+            researchPointsText.text = researchPoints.ToString();
 
         }
     }
